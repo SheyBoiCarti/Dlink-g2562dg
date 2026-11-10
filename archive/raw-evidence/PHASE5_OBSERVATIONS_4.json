@@ -1,0 +1,46 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:07:02.745518+00:00",
+  "records": [
+    {
+      "name": "data_details",
+      "command": "ls -la /data; ls -ld /data/log /tmp/var /tmp/var/dropbear; ls -ld /.ssh /etc/dropbear /tmp/var/dropbear/authorized_keys /etc/dropbear/authorized_keys 2>/dev/null",
+      "output": "total 0\ndrwxr-xr-x    4 admin    admin            0 Jan  1 02:00 .\ndrwxr-xr-x   18 admin    admin            0 Jan  1 02:00 ..\ndrw-r--r--    2 admin    admin            0 Jan  1 02:06 log\ndrw-r--r--    2 admin    admin            0 Jan  1 02:06 /data/log\ndrwxr-xr-x   15 admin    admin          600 Jan  1 02:00 /tmp/var\ndrwxr-xr-x    2 admin    admin           60 Jan  1 02:00 /tmp/var/dropbear"
+    },
+    {
+      "name": "key_fingerprint",
+      "command": "dropbearkey -y -f /var/dropbear/rsa_host_key 2>/dev/null | awk '/Fingerprint:/{print}'",
+      "output": "Fingerprint: md5 [MAC_OR_MD5_FINGERPRINT_1]"
+    },
+    {
+      "name": "init_inventory",
+      "command": "ls /etc/init.d; ls /usr/sbin | grep -E \"sysmgr|srvcmgr|tdsmgr|cfgcmd|flash|mtd|nand|dump|dropbear|utils|vsftpd\"",
+      "output": "cron      dhcp6c    fstab     telnet    xl2tpd\ndhcp-fwd  dhcp6s    quagga    ubus\ncfgcmd\ndropbear\nflash\nsrvcmgr\nsysmgr\ntdsmgr\nutils\nvsftpd"
+    },
+    {
+      "name": "volatile_links",
+      "command": "ls -ld /etc/resolv.conf /etc/hosts /etc/mtab /etc/smbpasswd /etc/fstab /var/group /var/passwd; cat /etc/config/fstab",
+      "output": "lrwxrwxrwx    1 admin    admin           10 Dec  9  2022 /etc/fstab -> /tmp/fstab\nlrwxrwxrwx    1 admin    admin           10 Dec  9  2022 /etc/hosts -> /var/hosts\nlrwxrwxrwx    1 admin    admin           12 Dec  9  2022 /etc/mtab -> /proc/mounts\nlrwxrwxrwx    1 admin    admin           16 Dec  9  2022 /etc/resolv.conf -> /var/resolv.conf\nlrwxrwxrwx    1 admin    admin           14 Dec  9  2022 /etc/smbpasswd -> /var/smbpasswd\n-rw-r--r--    1 admin    admin           16 Jan  1 02:00 /var/group\n-rw-r--r--    1 admin    admin           96 Jan  1 02:00 /var/passwd\nconfig global automount\n        option from_fstab 1\n        option anon_mount 1\n        \nconfig global autoswap\n        option from_fstab 1\n        option anon_swap 0\n        \nconfig mount\n        option target   /home\n        option device   /dev/sda1\n        option fstype   ext4\n        option options  rw,sync\n        option enabled  0\n        option enabled_fsck 0\n\nconfig swap\n        option device   /dev/sda2\n        option enabled  0"
+    },
+    {
+      "name": "flash_flags",
+      "command": "for n in 0 1 2 7 14; do d=/sys/class/mtd/mtd$n; ls -ld \"$d\" 2>/dev/null; done; ls /sys/class/mtd 2>/dev/null",
+      "output": "lrwxrwxrwx    1 admin    admin            0 Jan  1 02:00 /sys/class/mtd/mtd0 -> ../../devices/virtual/mtd/mtd0\nlrwxrwxrwx    1 admin    admin            0 Jan  1 02:00 /sys/class/mtd/mtd1 -> ../../devices/virtual/mtd/mtd1\nlrwxrwxrwx    1 admin    admin            0 Jan  1 02:00 /sys/class/mtd/mtd2 -> ../../devices/virtual/mtd/mtd2\nlrwxrwxrwx    1 admin    admin            0 Jan  1 02:00 /sys/class/mtd/mtd7 -> ../../devices/virtual/mtd/mtd7\nlrwxrwxrwx    1 admin    admin            0 Jan  1 02:00 /sys/class/mtd/mtd14 -> ../../devices/virtual/mtd/mtd14\nmtd0     mtd10ro  mtd12ro  mtd14ro  mtd3     mtd5     mtd7     mtd9\nmtd0ro   mtd11    mtd13    mtd1ro   mtd3ro   mtd5ro   mtd7ro   mtd9ro\nmtd1     mtd11ro  mtd13ro  mtd2     mtd4     mtd6     mtd8\nmtd10    mtd12    mtd14    mtd2ro   mtd4ro   mtd6ro   mtd8ro"
+    },
+    {
+      "name": "tools",
+      "command": "busybox --list | grep -E \"^(md5sum|sha1sum|sha256sum|strings|od|hexdump|stat|find|awk|nc|nanddump|flash_erase|flashcp|mtd|mount|umount)$\"; ls -l /usr/sbin/dropbear /usr/sbin/ams_cli /usr/sbin/srvcmgr /usr/sbin/sysmgr /usr/sbin/cfgcmd",
+      "output": "awk\nfind\nhexdump\nmd5sum\nmount\nnc\nstrings\numount\n-rwxr-xr-x    1 admin    admin       119024 Dec  9  2022 /usr/sbin/ams_cli\n-rwxr-xr-x    1 admin    admin        11808 Dec  9  2022 /usr/sbin/cfgcmd\n-rwxr-xr-x    1 admin    admin       154236 Dec  9  2022 /usr/sbin/dropbear\n-rwxr-xr-x    1 admin    admin        81640 Dec  9  2022 /usr/sbin/srvcmgr\n-rwxr-xr-x    1 admin    admin        95220 Dec  9  2022 /usr/sbin/sysmgr"
+    },
+    {
+      "name": "firewall_summary",
+      "command": "iptables -S 2>/dev/null | awk '/^-P / {print} /--dport (22|23)( |$)|-m multiport --dports [0-9,]*(22|23)/ {gsub(/--source [^ ]+/,\"--source [withheld]\"); print} /^-A INPUT / {print}'; command -v ip6tables",
+      "output": "-P INPUT DROP\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-A INPUT -m pkttype --pkt-type multicast -j ACCEPT\n-A INPUT -j ipsec_vpn\n-A INPUT -j anti_attack\n-A INPUT -j SCL_IP_FILTER_ACCEPT\n-A INPUT -j SCL_IP_DROP\n-A INPUT -j upnp_blacklist\n-A INPUT -j dhcp_lanportmap\n-A INPUT -j secondary_lan_in\n-A INPUT -j service_list\n-A INPUT -j dhcp_relay\n-A INPUT -j gre_tunnel\n-A INPUT -j l2tp_tunnel\n/usr/sbin/ip6tables"
+    },
+    {
+      "name": "hosts_and_account_status",
+      "command": "awk -F: '{n++; if ($3==0) z++} END {print \"passwd_records=\"n,\"uid0_records=\"z}' /etc/passwd; grep -E '^(CONFIG|START|STOP|PROG|USE_PROCD|SERVICE|[[:space:]]*service_start|[[:space:]]*start)' /etc/init.d/telnet 2>/dev/null",
+      "output": "~ #"
+    }
+  ]
+}

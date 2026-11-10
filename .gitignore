@@ -1,0 +1,50 @@
+# Local Python environments and generated output
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+.coverage
+htmlcov/
+# Local credentials, configuration, captures, and device exports
+.env
+.env.*
+!.env.example
+config.toml
+*.local.toml
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+known_hosts*
+*.log
+*.har
+*.pcap
+*.pcapng
+*.bin
+*.img
+*.dump
+backups/
+private/
+# Reconstructed firmware metadata and raw inode stores stay private.
+inode-store/
+inode-artifacts/
+filesystem-manifest.json
+!research/firmware/filesystem-manifest.json
+user_config.xml
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+.playwright-mcp/
+# Editor/OS files
+.vscode/
+.idea/
+.superpowers/
+.DS_Store
+Thumbs.db

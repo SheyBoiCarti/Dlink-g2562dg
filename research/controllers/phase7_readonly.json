@@ -1,0 +1,34 @@
+[
+  {
+    "name": "identity and mounts",
+    "command": "id -u; uname -srm; cat /proc/cmdline; cat /proc/mounts; cat /proc/filesystems; readlink /proc/1/exe; cfgcmd get InternetGatewayDevice.DeviceInfo.SoftwareVersion"
+  },
+  {
+    "name": "boot scripts",
+    "command": "cat /etc/inittab /etc/rc.d/rcS /etc/rc.d/histart /usr/syscfg/sys.init_after.sh"
+  },
+  {
+    "name": "system init safe lines",
+    "command": "grep -nE '^[[:space:]]*([^#].*)?(mount|tdsmgr|sysmgr|srvcmgr|sys.init|mdev|utils|insmod|start|cfgcmd|sleep)' /usr/syscfg/sys.init.sh"
+  },
+  {
+    "name": "startup hook search",
+    "command": "grep -rnE '/data|rc.local|autorun|user.sh|custom.sh|/overlay|pivot_root|switch_root|mount_root' /etc/rc.d /etc/init.d /usr/syscfg /sbin/hotplug-call /lib/preinit 2>/dev/null | head -100"
+  },
+  {
+    "name": "filesystem and config inventory",
+    "command": "ls -ld /data /data/ssh /overlay /rom /etc/dropbear /etc/rc.local /etc/config/dropbear /etc/default/dropbear /var /etc/config; ls /etc/init.d /lib/preinit /usr/syscfg; df -Pk /data; ls -l /var/dropbear/rsa_host_key; cat /proc/sys/kernel/hotplug"
+  },
+  {
+    "name": "service settings and state",
+    "command": "printf 'ssh_enable='; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Enable; printf '\\nssh_port='; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Port; printf '\\n'; ps | grep -E 'tdsmgr|sysmgr|srvcmgr|dropbear|telnetd|crond'; netstat -lnt | awk 'NR<3 || $4 ~ /:(22|23|2222)$/'"
+  },
+  {
+    "name": "safe binary references",
+    "command": "for f in /usr/sbin/sysmgr /usr/sbin/tdsmgr /usr/sbin/utils /usr/sbin/srvcmgr; do echo $f; strings $f | grep -E '^(/data(/[^ ]*)?|.*sys.init_after.sh.*|.*dropbearkey.*|.*rsa_host_key.*|.*ServiceSSH.*|mount -t jffs2.*|.*autorun.*|.*rc.local.*)$' | head -40; done"
+  },
+  {
+    "name": "baseline and final checks",
+    "command": "md5sum /etc/inittab /etc/rc.d/rcS /usr/syscfg/sys.init_after.sh /usr/sbin/sysmgr /usr/sbin/dropbear; test ! -e /tmp/dlink-phase6a && echo no-test-tree; test ! -e /etc/dropbear && echo no-global-key-directory; awk '$3==\"jffs2\" {print $2,$3,$4}' /proc/mounts; id -u"
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "time_utc": "2026-10-19T20:01:54.7889373Z",
+  "authorization": "Owner explicitly approved scheduled task registration enabling and start",
+  "task_name": "DLinkSSHRestore",
+  "state": "Running",
+  "enabled": true,
+  "run_level": "Limited",
+  "logon_type": "Interactive",
+  "multiple_instances": "IgnoreNew",
+  "network_required": true,
+  "lock_count_before": 1,
+  "lock_count_after": 1,
+  "same_lock_owner": true,
+  "last_task_result": 2147946720,
+  "last_result_meaning": "Duplicate start returned a refusal code while the existing task remained Running with the same unique monitor lock owner; not a completed-run success code.",
+  "reboot_initiated": false,
+  "last_task_result_hex": "0x800710e0",
+  "duplicate_start_refused_without_duplicate_instance": true
+}

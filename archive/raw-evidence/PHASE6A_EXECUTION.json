@@ -1,0 +1,119 @@
+{
+  "time_utc": "2026-10-19T18:37:23.483032+00:00",
+  "approval": "User explicitly approved the documented temporary test and cleanup.",
+  "records": [
+    {
+      "name": "fresh baseline",
+      "exit": 0,
+      "output": "0\nLinux 3.14.18 armv7l\nlrwxrwxrwx    1 admin    admin           11 Dec  9  2022 /etc/passwd -> /var/passwd\n-rw-------    1 admin    admin          116 Apr 30  2014 /etc/shadow\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key\n/ jffs2 ro,relatime\nActive Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN"
+    },
+    {
+      "name": "scratch absence",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "name": "create approved RAM scratch",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "name": "control file staged",
+      "file": "/tmp/dlink-phase6a/phase6a_rollback.sh",
+      "verified_against_local_file": true
+    },
+    {
+      "name": "control file staged",
+      "file": "/tmp/dlink-phase6a/phase6a_setup.sh",
+      "verified_against_local_file": true
+    },
+    {
+      "name": "approved temporary setup",
+      "exit": 0,
+      "output": "Temporary IPv4 LAN-only test listener ready; original services untouched."
+    },
+    {
+      "name": "test instance and listeners",
+      "exit": 0,
+      "output": "17441\nActive Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 10.0.0.2:2222           0.0.0.0:*               LISTEN      \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN      \ndrwx------    2 admin    admin           60 Jan  1 03:58 /tmp/dlink-phase6a/root/etc/dropbear\n-rw-------    1 admin    admin          567 Jan  1 03:58 /tmp/dlink-phase6a/root/etc/dropbear/authorized_keys"
+    },
+    {
+      "name": "PTY diagnostic server log",
+      "exit": 0,
+      "output": "[17441] Jan 01 01:58:19 Failed loading /etc/dropbear/dropbear_rsa_host_key\n[17441] Jan 01 01:58:19 Failed loading /etc/dropbear/dropbear_dss_host_key\n[17441] Jan 01 01:58:19 Not backgrounding\n[17450] Jan 01 01:58:20 Child connection from 10.0.0.10:63690\n[17450] Jan 01 01:58:21 Pubkey auth succeeded for 'admin' with key md5 [MAC_OR_MD5_FINGERPRINT_2] from 10.0.0.10:63690\n[17450] Jan 01 01:58:21 Exit (admin): Disconnect received\n[17455] Jan 01 01:58:21 Child connection from 10.0.0.10:63691\n[17455] Jan 01 01:58:22 Pubkey auth succeeded for 'admin' with key md5 [MAC_OR_MD5_FINGERPRINT_2] from 10.0.0.10:63691\n[17455] Jan 01 01:58:22 Exit (admin): Disconnect received"
+    },
+    {
+      "name": "approved rollback",
+      "exit": 0,
+      "output": "Temporary processes, six binds and owned RAM files removed."
+    },
+    {
+      "name": "post rollback scratch check",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "name": "post rollback mount check",
+      "exit": 0,
+      "output": ""
+    },
+    {
+      "name": "final original state",
+      "exit": 0,
+      "output": "0\nlrwxrwxrwx    1 admin    admin           11 Dec  9  2022 /etc/passwd -> /var/passwd\n-rw-------    1 admin    admin          116 Apr 30  2014 /etc/shadow\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key\n/ jffs2 ro,relatime\nActive Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN"
+    }
+  ],
+  "ssh_checks": [
+    {
+      "pty_requested": false,
+      "exit": 0,
+      "stdout": "PHASE6A_SSH_PROOF\n0\nuid=0(admin) gid=0(admin)\nLinux 3.14.18 armv7l\n",
+      "ssh_evidence": [
+        "debug1: Host '[10.0.0.2]:2222' is known and matches the RSA host key.",
+        "debug1: Server accepts key: C:/Users/YOUR_USER\\\\AppData\\\\Local\\\\DLinkResearch\\\\ssh\\\\phase6a-20261019-202134\\\\id_rsa_dlink_phase6a RSA [PUBLIC_KEY_FINGERPRINT_3] explicit",
+        "Authenticated to 10.0.0.2 ([10.0.0.2]:2222) using \"publickey\".",
+        "debug1: channel 0: new session [client-session] (inactive timeout: 0)",
+        "debug1: channel 0: free: client-session, nchannels 1",
+        "debug1: Exit status 0"
+      ],
+      "uid0_verified": true,
+      "authentication_publickey_verified": true
+    },
+    {
+      "pty_requested": true,
+      "exit": 255,
+      "stdout": "",
+      "ssh_evidence": [
+        "debug1: Host '[10.0.0.2]:2222' is known and matches the RSA host key.",
+        "debug1: Server accepts key: C:/Users/YOUR_USER\\\\AppData\\\\Local\\\\DLinkResearch\\\\ssh\\\\phase6a-20261019-202134\\\\id_rsa_dlink_phase6a RSA [PUBLIC_KEY_FINGERPRINT_3] explicit",
+        "Authenticated to 10.0.0.2 ([10.0.0.2]:2222) using \"publickey\".",
+        "debug1: channel 0: new session [client-session] (inactive timeout: 0)",
+        "debug1: channel 0: free: client-session, nchannels 1",
+        "Connection to 10.0.0.2 closed.",
+        "debug1: Exit status -1"
+      ],
+      "uid0_verified": false,
+      "authentication_publickey_verified": true
+    },
+    {
+      "pty_requested": false,
+      "exit": 0,
+      "stdout": "PHASE6A_SSH_PROOF\n0\nuid=0(admin) gid=0(admin)\nLinux 3.14.18 armv7l\n",
+      "ssh_evidence": [
+        "debug1: Host '[10.0.0.2]:2222' is known and matches the RSA host key.",
+        "debug1: Server accepts key: C:/Users/YOUR_USER\\\\AppData\\\\Local\\\\DLinkResearch\\\\ssh\\\\phase6a-20261019-202134\\\\id_rsa_dlink_phase6a RSA [PUBLIC_KEY_FINGERPRINT_3] explicit",
+        "Authenticated to 10.0.0.2 ([10.0.0.2]:2222) using \"publickey\".",
+        "debug1: channel 0: new session [client-session] (inactive timeout: 0)",
+        "debug1: channel 0: free: client-session, nchannels 1",
+        "debug1: Exit status 0"
+      ],
+      "uid0_verified": true,
+      "authentication_publickey_verified": true
+    }
+  ],
+  "rollback_verified": true,
+  "router_persistent_changes_requested": false,
+  "pty_uid0_demonstrated": false,
+  "ssh_publickey_uid0_demonstrated": true,
+  "fresh_telnet_uid0_verified": true
+}

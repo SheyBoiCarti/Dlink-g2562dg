@@ -1,0 +1,21 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:21:50.298963+00:00",
+  "records": [
+    {
+      "name": "mount_propagation",
+      "command": "awk '$5==\"/\" || $5==\"/tmp\" || $5==\"/dev\" || $5==\"/dev/pts\" {printf \"%s %s \",$5,$6;for(i=7;i<=NF && $i!=\"-\";i++)printf \"%s \",$i;print \"\"}' /proc/self/mountinfo",
+      "output": "/ ro,relatime \n/dev rw,relatime \n/dev rw,relatime \n/tmp rw,nodev,relatime \n/dev/pts rw,relatime"
+    },
+    {
+      "name": "input_auxiliary_chains",
+      "command": "for c in ipsec_vpn anti_attack SCL_IP_FILTER_ACCEPT SCL_IP_ACCEPT SCL_IP_DROP upnp_blacklist dhcp_lanportmap secondary_lan_in dhcp_relay gre_tunnel l2tp_tunnel; do iptables -S \"$c\" 2>/dev/null; done | awk '{for(i=1;i<=NF;i++)if($i==\"-s\"||$i==\"-d\")$(i+1)=\"[address withheld]\";print}'",
+      "output": "-N ipsec_vpn\n-N anti_attack\n-A anti_attack -i br0 -j RETURN\n-A anti_attack -p tcp -m tcp --tcp-flags SYN,ACK SYN -m hashlimit --hashlimit-above 30/sec --hashlimit-burst 30 --hashlimit-name syncookies -j ANTI_TARGET\n-A anti_attack -p udp -m udp --dport 7 -j ANTI_TARGET\n-A anti_attack -p udp -m udp --dport 19 -j ANTI_TARGET\n-A anti_attack -s [address withheld] ! -i lo -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN FIN,SYN -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags SYN,RST SYN,RST -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,RST FIN,RST -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,ACK FIN -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags PSH,ACK PSH -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags ACK,URG URG -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,PSH,ACK,URG -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,SYN,RST,ACK,URG -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN -j ANTI_TARGET\n-A anti_attack -p tcp -m tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG FIN,PSH,URG -j ANTI_TARGET\n-N SCL_IP_FILTER_ACCEPT\n-A SCL_IP_FILTER_ACCEPT -j SCL_IP_ACCEPT\n-N SCL_IP_ACCEPT\n-N SCL_IP_DROP\n-N upnp_blacklist\n-N dhcp_lanportmap\n-N secondary_lan_in\n-N dhcp_relay\n-A dhcp_relay -p udp -m udp --dport 67 -j ACCEPT\n-N gre_tunnel\n-N l2tp_tunnel"
+    },
+    {
+      "name": "root_view_layout",
+      "command": "ls -ld /etc/dropbear /tmp/dlink-phase6a 2>/dev/null; ls -l /bin/sh /usr/bin/id /bin/uname /etc/passwd /etc/group; df -Pk /tmp",
+      "output": "lrwxrwxrwx    1 admin    admin            7 Dec  9  2022 /bin/sh -> busybox\nlrwxrwxrwx    1 admin    admin            7 Dec  9  2022 /bin/uname -> busybox\nlrwxrwxrwx    1 admin    admin           10 Dec  9  2022 /etc/group -> /var/group\nlrwxrwxrwx    1 admin    admin           11 Dec  9  2022 /etc/passwd -> /var/passwd\nlrwxrwxrwx    1 admin    admin           17 Dec  9  2022 /usr/bin/id -> ../../bin/busybox\nFilesystem           1024-blocks    Used Available Capacity Mounted on\nnone                    524288       416    523872   0% /tmp"
+    }
+  ]
+}

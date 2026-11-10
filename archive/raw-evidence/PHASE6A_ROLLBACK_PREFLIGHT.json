@@ -1,0 +1,11 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:24:41.990118+00:00",
+  "records": [
+    {
+      "name": "unmount_help",
+      "command": "umount --help 2>&1; command -v mount; command -v umount; command -v chroot",
+      "output": "Usage:\n umount [-hV]\n umount -a [options]\n umount [options] <source> | <directory>\n\nOptions:\n -a, --all               umount all filesystems\n -c, --no-canonicalize   don't canonicalize paths\n -d, --detach-loop       if mounted loop device, also free this loop device\n     --fake              dry run; skip the umount(2) syscall\n -f, --force             force unmount (in case of an unreachable NFS system)\n -i, --internal-only     don't call the umount.<type> helpers\n -n, --no-mtab           don't write to /etc/mtab\n -l, --lazy              detach the filesystem now, and cleanup all later\n -O, --test-opts <list>  limit the set of filesystems (use with -a)\n -r, --read-only         In case unmounting fails, try to remount read-only\n -t, --types <list>      limit the set of filesystem types\n -v, --verbose           say what is being done\n\n -h, --help     display this help and exit\n -V, --version  output version information and exit\n\nFor more details see umount(8).\n/bin/mount\n/bin/umount\n/usr/sbin/chroot"
+    }
+  ]
+}

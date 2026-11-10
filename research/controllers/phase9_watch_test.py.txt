@@ -1,0 +1,54 @@
+import datetime,json,logging,os,subprocess,sys,time,uuid
+from dataclasses import replace
+from pathlib import Path
+from dlink_ssh_restore.cli import default_config,execute,write_config
+from dlink_ssh_restore.config import Config
+from dlink_ssh_restore.credentials import Credentials
+from dlink_ssh_restore.router import Router
+from dlink_ssh_restore.restore import RestoreError
+logging.getLogger('paramiko').setLevel(logging.CRITICAL)
+c=Config.load(default_config());directory=default_config().parent
+watch_config=directory/('phase9-watch-'+uuid.uuid4().hex+'.toml')
+write_config(watch_config,replace(c,monitor_seconds=60,attempts=1))
+log_path=directory/('phase9-watch-'+uuid.uuid4().hex+'.jsonl')
+report=Path('archive/raw-evidence/PHASE9_WATCH_EXECUTION.json')
+data={'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'mode':'temporary foreground monitor; no scheduled task','monitor_seconds':60,'events':[]}
+def save():report.write_text(json.dumps(data,indent=2),encoding='utf-8')
+r=Router(c,Credentials(c.owner),'');process=None;failed=False
+try:
+ r.connect();assert r.state()=='absent';data['retained_telnet_uid0']=True
+ with log_path.open('w',encoding='utf-8') as output:
+  process=subprocess.Popen([sys.executable,'-m','dlink_ssh_restore.cli','--config',str(watch_config),'watch'],stdout=output,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+  deadline=time.monotonic()+150;seen=0
+  while time.monotonic()<deadline:
+   entries=[]
+   for line in log_path.read_text(encoding='utf-8').splitlines():
+    try:entry=json.loads(line)
+    except ValueError:continue
+    entries.append({k:v for k,v in entry.items() if k in ('event','uid','interactive','state','reason')})
+   data['events']=entries;save()
+   if len(entries)>seen:
+    for entry in entries[seen:]:print(json.dumps(entry),flush=True)
+    seen=len(entries)
+   if any(e.get('event') in ('restore_failed','failed') for e in entries):raise RestoreError('watch_failure')
+   successful=[e for e in entries if e.get('event')=='restore_verified']
+   if len(successful)>=2:
+    assert successful[0]['state']=='restored';assert successful[1]['state']=='already_ready'
+    data['two_cycles_verified']=True;break
+   if process.poll() is not None:raise RestoreError('watch_exited_early')
+   time.sleep(1)
+  else:raise RestoreError('watch_test_timeout')
+except RestoreError as exc:failed=True;data['failure']=str(exc)
+except Exception:failed=True;data['failure']='unexpected_error_details_suppressed'
+finally:
+ if process is not None and process.poll() is None:
+  process.terminate();process.wait(timeout=5);data['owned_windows_monitor_stopped']=True
+ try:
+  data['rollback']=execute(c,'rollback');data['post_status']=execute(c,'status')
+  data['original_host_identity_matches']=r.identity()==c.host_fingerprint
+  data['ipv6_scopes']=r.command("ip -6 addr show | awk '/^[0-9]+:/ {iface=$2} /inet6/ {for(i=1;i<=NF;i++) if($i==\"scope\") print iface,\"IPv6_scope=\"$(i+1)}'")
+  data['scratch_mounts']=r.command("awk '$5 ~ /^\\/tmp\\/dlink-phase6a(\\/|$)/ {print $5}' /proc/self/mountinfo")
+ except RestoreError as exc:failed=True;data['cleanup_failure']=str(exc)
+ r.close()
+ data['passed']=not failed;save();print(json.dumps(data,indent=2),flush=True)
+sys.exit(1 if failed else 0)

@@ -1,0 +1,21 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:48:10.672038+00:00",
+  "records": [
+    {
+      "name": "global_state",
+      "command": "test ! -e /tmp/dlink-phase6a && test ! -L /tmp/dlink-phase6a && test ! -e /etc/dropbear && printf \"Temporary tree absent; original key directory still absent\\n\"; id -u; awk '$2==\"/\" && $3==\"jffs2\" {print $2,$3,$4}' /proc/mounts",
+      "output": "Temporary tree absent; original key directory still absent\n0\n/ jffs2 ro,relatime"
+    },
+    {
+      "name": "host_identity",
+      "command": "dropbearkey -y -f /var/dropbear/rsa_host_key 2>/dev/null | awk '/Fingerprint:/{print}'",
+      "output": "Fingerprint: md5 [MAC_OR_MD5_FINGERPRINT_1]"
+    },
+    {
+      "name": "original_services",
+      "command": "for d in /proc/[0-9]*; do [ -r \"$d/comm\" ] || continue; n=$(cat \"$d/comm\"); case \"$n\" in dropbear|telnetd) printf '%s %s\\n' \"${d##*/}\" \"$n\";; esac; done; netstat -lnt | awk 'NR<3 || $4 ~ /:(22|23|2222)$/'",
+      "output": "1037 telnetd\n3244 dropbear\nActive Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN"
+    }
+  ]
+}

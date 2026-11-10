@@ -1,0 +1,631 @@
+{
+  "description": "Imported research records; paths are relative labels. Redactions are documented in docs/PUBLICATION.md.",
+  "records": [
+    {
+      "source": "dlink-g2562dg/docs/ALTERNATIVE_ACCESS.md",
+      "published": "docs/ALTERNATIVE_ACCESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/AUTOMATION_DEPLOYMENT.md",
+      "published": "docs/AUTOMATION_DEPLOYMENT.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/BOOT_PROCESS.md",
+      "published": "docs/BOOT_PROCESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/DROPBEAR_ANALYSIS.md",
+      "published": "docs/DROPBEAR_ANALYSIS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/FILESYSTEM.md",
+      "published": "docs/FILESYSTEM.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/IMPLEMENTATION_PLAN.md",
+      "published": "docs/IMPLEMENTATION_PLAN.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/LINUX_ENVIRONMENT.md",
+      "published": "docs/LINUX_ENVIRONMENT.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/NETWORK_RECON.md",
+      "published": "docs/NETWORK_RECON.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/PHASE3_PLAN.md",
+      "published": "docs/PHASE3_PLAN.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/RECOVERY.md",
+      "published": "docs/RECOVERY.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/ROOT_ACCESS_ASSESSMENT.md",
+      "published": "docs/ROOT_ACCESS_ASSESSMENT.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SHELL_ACCESS.md",
+      "published": "docs/SHELL_ACCESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_AUTHENTICATION.md",
+      "published": "docs/SSH_AUTHENTICATION.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_HOST_KEYS.md",
+      "published": "docs/SSH_HOST_KEYS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_PERSISTENCE.md",
+      "published": "docs/SSH_PERSISTENCE.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_PTY_DIAGNOSTICS.md",
+      "published": "docs/SSH_PTY_DIAGNOSTICS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_ROLLBACK.md",
+      "published": "docs/SSH_ROLLBACK.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/SSH_SERVICE.md",
+      "published": "docs/SSH_SERVICE.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/UART_ACCESS.md",
+      "published": "docs/UART_ACCESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/UART_HARDWARE.md",
+      "published": "docs/UART_HARDWARE.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/UART_RESEARCH.md",
+      "published": "docs/UART_RESEARCH.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/docs/WEB_INTERFACE.md",
+      "published": "docs/WEB_INTERFACE.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/ACCESS_METHODS.md",
+      "published": "findings/ACCESS_METHODS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/AUTHENTICATED_FOLLOWUP.md",
+      "published": "findings/AUTHENTICATED_FOLLOWUP.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/CONFIG_BACKUP_RESULTS.md",
+      "published": "findings/CONFIG_BACKUP_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/DEPLOYMENT_STATUS.md",
+      "published": "findings/DEPLOYMENT_STATUS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/http-summary.txt",
+      "published": "archive/raw-evidence/http-summary.txt",
+      "sanitized": false
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/LINUX_ACCESS_VERIFIED.json",
+      "published": "archive/raw-evidence/LINUX_ACCESS_VERIFIED.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/LIVE_TEST_RESULTS.md",
+      "published": "findings/LIVE_TEST_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/network-windows.txt",
+      "published": "archive/raw-evidence/network-windows.txt",
+      "sanitized": false
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE2_RESULTS.md",
+      "published": "archive/phase-history/PHASE2_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE3_READINESS.md",
+      "published": "archive/phase-history/PHASE3_READINESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE3_RESULTS.md",
+      "published": "archive/phase-history/PHASE3_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE3B_RESULTS.md",
+      "published": "archive/phase-history/PHASE3B_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE4_READINESS.md",
+      "published": "archive/phase-history/PHASE4_READINESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE4_RESULTS.md",
+      "published": "archive/phase-history/PHASE4_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_BINARY_ANALYSIS.json",
+      "published": "archive/raw-evidence/PHASE5_BINARY_ANALYSIS.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_1.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_1.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_2.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_2.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_3.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_3.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_4.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_4.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_5.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_5.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_6.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_6.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_7.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_7.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_OBSERVATIONS_8.json",
+      "published": "archive/raw-evidence/PHASE5_OBSERVATIONS_8.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE5_RESULTS.md",
+      "published": "archive/phase-history/PHASE5_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE5_SSH_PROBE.json",
+      "published": "archive/raw-evidence/PHASE5_SSH_PROBE.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE6_READINESS.md",
+      "published": "archive/phase-history/PHASE6_READINESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_ADDITIONAL_PREFLIGHT.json",
+      "published": "archive/raw-evidence/PHASE6A_ADDITIONAL_PREFLIGHT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_CLIENT_KEY.json",
+      "published": "archive/raw-evidence/PHASE6A_CLIENT_KEY.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_EXECUTION.json",
+      "published": "archive/raw-evidence/PHASE6A_EXECUTION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_EXECUTION_ATTEMPT1.json",
+      "published": "archive/raw-evidence/PHASE6A_EXECUTION_ATTEMPT1.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_FINAL_CHECKS.json",
+      "published": "archive/raw-evidence/PHASE6A_FINAL_CHECKS.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_PREFLIGHT.json",
+      "published": "archive/raw-evidence/PHASE6A_PREFLIGHT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE6A_RESULTS.md",
+      "published": "archive/phase-history/PHASE6A_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6A_ROLLBACK_PREFLIGHT.json",
+      "published": "archive/raw-evidence/PHASE6A_ROLLBACK_PREFLIGHT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_BINARY_NOTES.json",
+      "published": "archive/raw-evidence/PHASE6B_BINARY_NOTES.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_BOOT.json",
+      "published": "archive/raw-evidence/PHASE6B_BOOT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_EXECUTION.json",
+      "published": "archive/raw-evidence/PHASE6B_EXECUTION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_FINAL_CHECKS.json",
+      "published": "archive/raw-evidence/PHASE6B_FINAL_CHECKS.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_FOLLOWUP.json",
+      "published": "archive/raw-evidence/PHASE6B_FOLLOWUP.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE6B_READONLY.json",
+      "published": "archive/raw-evidence/PHASE6B_READONLY.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE6B_RESULTS.md",
+      "published": "archive/phase-history/PHASE6B_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE7_FOLLOWUP.json",
+      "published": "archive/raw-evidence/PHASE7_FOLLOWUP.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE7_READINESS.md",
+      "published": "archive/phase-history/PHASE7_READINESS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE7_READONLY.json",
+      "published": "archive/raw-evidence/PHASE7_READONLY.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE7_RESULTS.md",
+      "published": "archive/phase-history/PHASE7_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE8_RESULTS.md",
+      "published": "archive/phase-history/PHASE8_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_AUTHENTICATED_PREFLIGHT.json",
+      "published": "archive/raw-evidence/PHASE9_AUTHENTICATED_PREFLIGHT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_LOG_REVIEW.json",
+      "published": "archive/raw-evidence/PHASE9_LOG_REVIEW.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_MANUAL_ATTEMPT1.json",
+      "published": "archive/raw-evidence/PHASE9_MANUAL_ATTEMPT1.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_MANUAL_EXECUTION.json",
+      "published": "archive/raw-evidence/PHASE9_MANUAL_EXECUTION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_MANUAL_POST_RESTART.json",
+      "published": "archive/raw-evidence/PHASE9_MANUAL_POST_RESTART.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_MANUAL_PRE_RESTART.json",
+      "published": "archive/raw-evidence/PHASE9_MANUAL_PRE_RESTART.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_OFFLINE_CHECKS.json",
+      "published": "archive/raw-evidence/PHASE9_OFFLINE_CHECKS.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_POST_RESTART_KEY_VERIFICATION.json",
+      "published": "archive/raw-evidence/PHASE9_POST_RESTART_KEY_VERIFICATION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_POST_RESTART_PROBE.json",
+      "published": "archive/raw-evidence/PHASE9_POST_RESTART_PROBE.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_POST_RESTART_TRUST_UPDATE.json",
+      "published": "archive/raw-evidence/PHASE9_POST_RESTART_TRUST_UPDATE.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_PREFLIGHT.json",
+      "published": "archive/raw-evidence/PHASE9_PREFLIGHT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_RECOVERY_EXECUTION.json",
+      "published": "archive/raw-evidence/PHASE9_RECOVERY_EXECUTION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/phase-history/PHASE9_RESULTS.md",
+      "published": "archive/phase-history/PHASE9_RESULTS.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_SCHEDULED_RESTORE.json",
+      "published": "archive/raw-evidence/PHASE9_SCHEDULED_RESTORE.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_SINGLE_INSTANCE.json",
+      "published": "archive/raw-evidence/PHASE9_SINGLE_INSTANCE.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_TASK_DEPLOYMENT.json",
+      "published": "archive/raw-evidence/PHASE9_TASK_DEPLOYMENT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_TELNET_LINE_LIMIT.json",
+      "published": "archive/raw-evidence/PHASE9_TELNET_LINE_LIMIT.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/PHASE9_WATCH_EXECUTION.json",
+      "published": "archive/raw-evidence/PHASE9_WATCH_EXECUTION.json",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/archive/raw-evidence/protocol-observations.json",
+      "published": "archive/raw-evidence/protocol-observations.json",
+      "sanitized": false
+    },
+    {
+      "source": "dlink-g2562dg/findings/ROOT_ACCESS_VERIFIED.md",
+      "published": "findings/ROOT_ACCESS_VERIFIED.md",
+      "sanitized": true
+    },
+    {
+      "source": "dlink-g2562dg/findings/VERIFIED_COMMAND_OUTPUT.md",
+      "published": "findings/VERIFIED_COMMAND_OUTPUT.md",
+      "sanitized": true
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/docs/EXISTING_RESEARCH.md",
+      "published": "archive/phase-1-reconnaissance/docs/EXISTING_RESEARCH.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/docs/FIRMWARE.md",
+      "published": "archive/phase-1-reconnaissance/docs/FIRMWARE.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/docs/HARDWARE.md",
+      "published": "archive/phase-1-reconnaissance/docs/HARDWARE.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/docs/SOURCES.md",
+      "published": "archive/phase-1-reconnaissance/docs/SOURCES.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/findings/CONFIRMED.md",
+      "published": "archive/phase-1-reconnaissance/findings/CONFIRMED.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/findings/HYPOTHESES.md",
+      "published": "archive/phase-1-reconnaissance/findings/HYPOTHESES.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/findings/UNKNOWNS.md",
+      "published": "archive/phase-1-reconnaissance/findings/UNKNOWNS.md",
+      "sanitized": false
+    },
+    {
+      "source": "archive/phase-1-reconnaissance/README.md",
+      "published": "archive/phase-1-reconnaissance/README.md",
+      "sanitized": false
+    },
+    {
+      "source": "local-research-tools/phase5_batch1.json",
+      "published": "research/controllers/phase5_batch1.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch2.json",
+      "published": "research/controllers/phase5_batch2.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch3.json",
+      "published": "research/controllers/phase5_batch3.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch4.json",
+      "published": "research/controllers/phase5_batch4.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch5.json",
+      "published": "research/controllers/phase5_batch5.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch6.json",
+      "published": "research/controllers/phase5_batch6.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch7.json",
+      "published": "research/controllers/phase5_batch7.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_batch8.json",
+      "published": "research/controllers/phase5_batch8.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase5_console.py",
+      "published": "research/controllers/phase5_console.py.txt",
+      "sanitized": false
+    },
+    {
+      "source": "local-research-tools/phase6a_additional.json",
+      "published": "research/controllers/phase6a_additional.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6a_execute.py",
+      "published": "research/controllers/phase6a_execute.py.txt",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6a_final_checks.json",
+      "published": "research/controllers/phase6a_final_checks.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6a_preflight.json",
+      "published": "research/controllers/phase6a_preflight.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6a_rollback_preflight.json",
+      "published": "research/controllers/phase6a_rollback_preflight.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6b_boot.json",
+      "published": "research/controllers/phase6b_boot.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6b_execute.py",
+      "published": "research/controllers/phase6b_execute.py.txt",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6b_followup.json",
+      "published": "research/controllers/phase6b_followup.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase6b_readonly.json",
+      "published": "research/controllers/phase6b_readonly.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase7_followup.json",
+      "published": "research/controllers/phase7_followup.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase7_readonly.json",
+      "published": "research/controllers/phase7_readonly.json",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase9_install_approved_task.ps1",
+      "published": "research/controllers/phase9_install_approved_task.ps1.txt",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase9_local_diagnostic.ps1",
+      "published": "research/controllers/phase9_local_diagnostic.ps1.txt",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase9_manual_test.py",
+      "published": "research/controllers/phase9_manual_test.py.txt",
+      "sanitized": false
+    },
+    {
+      "source": "local-research-tools/phase9_setup.ps1",
+      "published": "research/controllers/phase9_setup.ps1.txt",
+      "sanitized": true
+    },
+    {
+      "source": "local-research-tools/phase9_show_telnet_password.py",
+      "published": "research/controllers/phase9_show_telnet_password.py.txt",
+      "sanitized": false
+    },
+    {
+      "source": "local-research-tools/phase9_watch_test.py",
+      "published": "research/controllers/phase9_watch_test.py.txt",
+      "sanitized": false
+    },
+    {
+      "source": "local-research-firmware/DSL-G2562DG_TK_1.00TK_V1.2.12ak_20210420_telkom-Image-all.provenance.json",
+      "published": "research/firmware/DSL-G2562DG_TK_1.00TK_V1.2.12ak_20210420_telkom-Image-all.provenance.json",
+      "sanitized": true
+    },
+    {
+      "source": "recovered-inline-firmware-parser",
+      "published": "research/firmware/extract_jffs2.py",
+      "sanitized": true,
+      "note": "Recovered scanner/reconstruction algorithm; adapted interface, exact-image gate, private output, and count-only reporting."
+    }
+  ]
+}

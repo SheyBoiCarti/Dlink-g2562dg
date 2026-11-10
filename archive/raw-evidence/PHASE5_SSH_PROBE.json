@@ -1,0 +1,13 @@
+{
+  "no_credentials_or_keys_sent": true,
+  "exit": 255,
+  "observations": [
+    "debug1: Remote protocol version 2.0, remote software version dropbear_2014.63",
+    "debug1: kex: algorithm: diffie-hellman-group14-sha1",
+    "debug1: kex: host key algorithm: ssh-rsa",
+    "debug1: kex: server->client cipher: aes128-ctr MAC: hmac-sha1 compression: none",
+    "debug1: Host '10.0.0.2' is known and matches the RSA host key.",
+    "debug1: Authentications that can continue: publickey,password",
+    "admin@10.0.0.2: Permission denied (publickey,password)."
+  ]
+}

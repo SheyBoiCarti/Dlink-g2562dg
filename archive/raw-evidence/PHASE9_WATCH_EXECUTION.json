@@ -1,0 +1,32 @@
+{
+  "time_utc": "2026-10-19T19:48:32.929186+00:00",
+  "mode": "temporary foreground monitor; no scheduled task",
+  "monitor_seconds": 60,
+  "events": [
+    {
+      "event": "restore_verified",
+      "interactive": true,
+      "state": "restored",
+      "uid": 0
+    },
+    {
+      "event": "restore_verified",
+      "interactive": true,
+      "state": "already_ready",
+      "uid": 0
+    }
+  ],
+  "retained_telnet_uid0": true,
+  "two_cycles_verified": true,
+  "owned_windows_monitor_stopped": true,
+  "rollback": {
+    "state": "removed"
+  },
+  "post_status": {
+    "state": "absent"
+  },
+  "original_host_identity_matches": true,
+  "ipv6_scopes": "lo: IPv6_scope=host\neth0: IPv6_scope=link\nbr0: IPv6_scope=link\nbr1: IPv6_scope=link\neth0.3: IPv6_scope=link\nwlan0: IPv6_scope=link\nwds0: IPv6_scope=link\nwlan1: IPv6_scope=link",
+  "scratch_mounts": "",
+  "passed": true
+}

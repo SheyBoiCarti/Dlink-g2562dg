@@ -1,0 +1,16 @@
+{
+  "time_utc": "2026-10-19T19:56:22.230480+00:00",
+  "owner_reported_restart": true,
+  "expected_fingerprint": "[PUBLIC_KEY_FINGERPRINT_1]",
+  "ports": {
+    "22": "reachable",
+    "23": "reachable",
+    "2222": "not_reachable"
+  },
+  "observed_fingerprint": "[PUBLIC_KEY_FINGERPRINT_2]",
+  "identity_matches": false,
+  "telnet_login_prompt_seen": true,
+  "credentials_sent": false,
+  "trust_updated": false,
+  "router_changes": false
+}

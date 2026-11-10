@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-09",
+  "scope": "Offline reconstruction of the exact older vendor image; no live router authentication or extracted executable execution.",
+  "extractor": "extract_jffs2.py",
+  "extractor_sha256": "259175a3aef6fdd683e1d1e0989c22bfc0365d5d2fa504085b829a11a07516d8",
+  "source": "Scanner and reconstruction algorithm recovered from the 2026-10-19 investigation inline Python tool calls; packaged with explicit paths, digest validation, output guards, and count-only reporting.",
+  "image_size": 24272267,
+  "image_sha256": "2f7cf1c4992f6521265480dbb78d4989a80bf090ff636a3081ce6f1e275ebbd7",
+  "node_count": 17405,
+  "artifact_count": 3627,
+  "crc_failures": 0,
+  "reconstruction_errors": 0,
+  "original_node_inventory_equal": true,
+  "original_artifact_bytes_equal": 3627,
+  "original_artifact_metadata_equal": 3627,
+  "original_artifact_set_equal": true,
+  "private_reference_material_distributed": false,
+  "limits": [
+    "The original reference artifact bytes are retained privately, not supplied as an independent public comparison oracle.",
+    "No claim of general JFFS2 support, alternate firmware compatibility, live credential validation on another device, or completed vendor notification.",
+    "The public filesystem manifest is redacted and uses normalized backing paths, so it is not an exact generated-output inventory."
+  ],
+  "verification_python": "3.12.14",
+  "packaged_cli_output_counts_equal": true
+}

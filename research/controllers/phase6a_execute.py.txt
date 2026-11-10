@@ -1,0 +1,198 @@
+"""Execute the specifically approved RAM-only proof; always attempt rollback."""
+from pathlib import Path
+import base64
+import datetime
+import hashlib
+import json
+import os
+import re
+import shlex
+import socket
+import subprocess
+import sys
+import time
+
+sys.stdout.reconfigure(encoding='utf8', errors='replace')
+BASE = Path(os.environ['LOCALAPPDATA']) / 'DLinkResearch'
+PROJECT = Path(r'<WORKSPACE_OR_USER_HOME>\dlink-g2562dg')
+KEYDIR = BASE / 'ssh/phase6a-20261019-202134'
+P = '/tmp/dlink-phase6a'
+R = P + '/root'
+namespace = {}
+exec((BASE / 'tools/phase5_console.py').read_text().split('\ncommands =')[0], namespace)
+Console = namespace['Console']
+sanitize = namespace['sanitize']
+result = {'time_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+          'approval': 'User explicitly approved the documented temporary test and cleanup.',
+          'records': [], 'ssh_checks': [], 'rollback_verified': False,
+          'router_persistent_changes_requested': False}
+destination = PROJECT / 'archive/raw-evidence/PHASE6A_EXECUTION.json'
+counter = 0
+c = None
+scratch_created = False
+
+
+def save():
+    destination.write_text(json.dumps(result, indent=2), encoding='utf8')
+
+
+def connect():
+    console = Console()
+    assert 'LOGIN#' in console.read()
+    console.sock.sendall(namespace['account'] + b'\r\n')
+    assert 'PASS#' in console.read()
+    console.sock.sendall(namespace['secret'] + b'\r\n')
+    assert 'AMS#' in console.read()
+    console.send('sh')
+    assert '#' in console.read()
+    console.send('unset HISTFILE; HISTSIZE=0')
+    console.read()
+    return console
+
+
+def run(label, command, timeout=20, record=True, check=True):
+    global counter
+    assert '\n' not in command and '\r' not in command
+    counter += 1
+    begin = '__P6_BEGIN_%d__' % counter
+    code = '__P6_CODE_%d__' % counter
+    end = '__P6_END_%d__' % counter
+    c.send("printf '\\n" + begin + "\\n'; " + command +
+           "; p6_rc=$?; printf '\\n" + code + "%s\\n" + end + "\\n' \"$p6_rc\"")
+    raw = c.read(timeout, until=('\n' + end + '\n').encode())
+    match = re.search(r'(?ms)^' + begin + r'\n(.*?)\n' + code + r'(\d+)\n' + end, raw)
+    if not match:
+        raise RuntimeError('Missing completion frame: ' + label)
+    output = sanitize(match[1]).strip()
+    rc = int(match[2])
+    if record:
+        result['records'].append({'name': label, 'exit': rc, 'output': output})
+        save()
+        print(label + ':\n' + output, flush=True)
+    if check and rc:
+        raise RuntimeError(label + ' returned ' + str(rc))
+    return output, rc
+
+
+def upload(local, remote):
+    data = local.read_bytes().replace(b'\r\n', b'\n')
+    encoded = base64.b64encode(data).decode()
+    run('initialize upload', ': > ' + shlex.quote(remote + '.b64'), record=False)
+    for i in range(0, len(encoded), 180):
+        run('upload block', "printf '%s' " + shlex.quote(encoded[i:i+180]) +
+            ' >> ' + shlex.quote(remote + '.b64'), record=False)
+    command = ('base64 -d ' + shlex.quote(remote + '.b64') + ' > ' + shlex.quote(remote) +
+               ' && chmod 700 ' + shlex.quote(remote) + ' && rm ' + shlex.quote(remote + '.b64') +
+               ' && md5sum ' + shlex.quote(remote))
+    output, _ = run('verify uploaded control file', command, record=False)
+    assert hashlib.md5(data).hexdigest() in output
+    result['records'].append({'name': 'control file staged', 'file': remote,
+                              'verified_against_local_file': True})
+    save()
+
+
+def ssh_check(pty):
+    args = [r'C:\Program Files\Git\usr\bin\ssh.exe', '-v', '-F', 'none',
+            '-p', '2222', '-i', str(KEYDIR / 'id_rsa_dlink_phase6a'),
+            '-o', 'UserKnownHostsFile=' + str(KEYDIR / 'known_hosts_phase6a'),
+            '-o', 'GlobalKnownHostsFile=none', '-o', 'StrictHostKeyChecking=yes',
+            '-o', 'UpdateHostKeys=no', '-o', 'IdentitiesOnly=yes',
+            '-o', 'IdentityAgent=none', '-o', 'PreferredAuthentications=publickey',
+            '-o', 'PasswordAuthentication=no', '-o', 'KbdInteractiveAuthentication=no',
+            '-o', 'BatchMode=yes', '-o', 'ConnectTimeout=5',
+            '-o', 'ConnectionAttempts=1', '-o', 'KexAlgorithms=+diffie-hellman-group14-sha1',
+            '-o', 'HostKeyAlgorithms=+ssh-rsa', '-o', 'PubkeyAcceptedAlgorithms=+ssh-rsa',
+            '-tt' if pty else '-T', 'admin@10.0.0.2',
+            "unset HISTFILE; printf 'PHASE6A_SSH_PROOF\\n'; id -u; id; uname -srm"]
+    completed = subprocess.run(args, capture_output=True, text=True, timeout=25)
+    output = sanitize(completed.stdout.replace('\r', ''))
+    retained = [line for line in completed.stderr.splitlines()
+                if any(word in line for word in ('Authenticated to ', 'Authentication succeeded',
+                    'Server accepts key:', 'signing using ', 'Permission denied',
+                    'no mutual signature', 'known and matches', 'PTY allocation request failed',
+                    'Host key verification failed', 'Connection refused', 'Load key ',
+                    'channel 0:', 'Exit status ', 'pty', 'request failed', 'Connection to ', 'error', 'failed'))]
+    proof = {'pty_requested': pty, 'exit': completed.returncode,
+             'stdout': output, 'ssh_evidence': retained,
+             'uid0_verified': bool(re.search(r'uid=0\b', output)),
+             'authentication_publickey_verified': any('Authenticated to ' in line and
+                                                      'publickey' in line for line in retained)}
+    result['ssh_checks'].append(proof)
+    save()
+    print('SSH CHECK ' + ('PTY' if pty else 'EXEC') + ':\n' + output +
+          '\n' + '\n'.join(retained), flush=True)
+    assert proof['exit'] == 0 and proof['uid0_verified']
+    assert proof['authentication_publickey_verified']
+    assert 'Linux 3.14.18 armv7l' in output
+
+
+try:
+    assert (KEYDIR / 'id_rsa_dlink_phase6a').is_file()
+    public = (KEYDIR / 'id_rsa_dlink_phase6a.pub').read_bytes()
+    assert public.startswith(b'ssh-rsa ') and len(public.splitlines()) == 1
+    c = connect()
+    run('fresh baseline', "id -u; uname -srm; ls -ld /etc/passwd /etc/shadow /var/dropbear/rsa_host_key; awk '$2==\"/\" && $3==\"jffs2\" {print $2,$3,$4}' /proc/mounts; netstat -lnt | awk 'NR<3 || $4 ~ /:(22|23|2222)$/'")
+    run('scratch absence', 'test ! -e ' + P + ' && test ! -L ' + P)
+    run('create approved RAM scratch', "umask 077; mkdir " + P +
+        "; printf '%s\\n' dlink-phase6a-v1 > " + P + '/.phase6a-owned')
+    scratch_created = True
+    upload(PROJECT / 'scripts/phase6a_rollback.sh', P + '/phase6a_rollback.sh')
+    upload(PROJECT / 'scripts/phase6a_setup.sh', P + '/phase6a_setup.sh')
+    run('approved temporary setup', 'sh ' + P + '/phase6a_setup.sh ' +
+        shlex.quote(base64.b64encode(public).decode()), timeout=35)
+    run('test instance and listeners', "cat " + P + "/launcher.pid; netstat -lnt | awk 'NR<3 || $4 ~ /:(22|23|2222)$/'; ls -ld " + R + '/etc/dropbear ' + R + '/etc/dropbear/authorized_keys')
+    ssh_check(False)
+    try:
+        ssh_check(True)
+        result['pty_uid0_demonstrated'] = True
+    except AssertionError:
+        result['pty_uid0_demonstrated'] = False
+        run('PTY diagnostic server log', 'tail -n 40 ' + P + '/dropbear.log')
+    ssh_check(False)
+    result['ssh_publickey_uid0_demonstrated'] = True
+    save()
+except Exception as error:
+    result['error'] = type(error).__name__ + ': ' + str(error)
+    save()
+    print('TEST STOPPED: ' + result['error'], flush=True)
+finally:
+    if c is not None:
+        try:
+            if scratch_created:
+                run('approved rollback', 'sh ' + P + '/phase6a_rollback.sh', timeout=25)
+                run('post rollback scratch check', 'test ! -e ' + P + ' && test ! -L ' + P)
+                run('post rollback mount check', "awk -v p='" + P + "/' 'index($5,p)==1 {found=1} END {exit found}' /proc/self/mountinfo")
+                output, _ = run('final original state', "id -u; ls -ld /etc/passwd /etc/shadow /var/dropbear/rsa_host_key; awk '$2==\"/\" && $3==\"jffs2\" {print $2,$3,$4}' /proc/mounts; netstat -lnt | awk 'NR<3 || $4 ~ /:(22|23|2222)$/'")
+                assert '2222' not in output
+                assert 'jffs2 ro' in output
+                assert ':22' in output and ':23' in output
+                result['rollback_verified'] = True
+                save()
+            c.send('exit')
+            assert 'AMS#' in c.read()
+            c.send('exit')
+            c.read()
+            c.sock.close()
+            c = None
+            recovery = connect()
+            recovery.send("printf '\\nPHASE6A_TELNET_RECOVERY\\n'; id -u")
+            output = recovery.read(2)
+            assert re.search(r'(?m)^0$', output)
+            recovery.send('exit')
+            assert 'AMS#' in recovery.read()
+            recovery.send('exit')
+            recovery.read()
+            recovery.sock.close()
+            result['fresh_telnet_uid0_verified'] = True
+            save()
+            print('Fresh Telnet recovery login and UID 0 verified; sessions closed.', flush=True)
+        except Exception as cleanup_error:
+            result['cleanup_error'] = type(cleanup_error).__name__ + ': ' + str(cleanup_error)
+            save()
+            print('CLEANUP REQUIRES FOLLOW-UP: ' + result['cleanup_error'], flush=True)
+        finally:
+            if c is not None:
+                c.sock.close()
+    save()
+sys.exit(0 if result.get('ssh_publickey_uid0_demonstrated') and result['rollback_verified']
+         and result.get('fresh_telnet_uid0_verified') else 1)

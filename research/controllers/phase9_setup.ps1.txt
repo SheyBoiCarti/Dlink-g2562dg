@@ -1,0 +1,49 @@
+trap {
+    $safeFailure = [ordered]@{
+        line = $_.InvocationInfo.ScriptLineNumber
+        command = $_.InvocationInfo.MyCommand.Name
+        type = $_.Exception.GetType().FullName
+        inner_type = if ($_.Exception.InnerException) { $_.Exception.InnerException.GetType().FullName } else { '' }
+        error_id = $_.FullyQualifiedErrorId
+    }
+    $safeFailure | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $env:LOCALAPPDATA 'DLinkResearch\tools\phase9_setup_error.json') -Encoding utf8
+    Write-Host ('Local setup stopped at line ' + $safeFailure.line + ': ' + $safeFailure.type)
+    Read-Host 'Diagnostic contains only line/type, no secrets. Press Enter to close'
+    exit 1
+}
+$ErrorActionPreference = 'Stop'
+$Host.UI.RawUI.WindowTitle = 'D-Link Phase 9 - LOCAL secure setup only'
+$project = '<WORKSPACE_OR_USER_HOME>\dlink-g2562dg'
+$python = Join-Path $project 'automation\.venv312\Scripts\python.exe'
+$localDir = Join-Path $env:LOCALAPPDATA 'DLinkSSHRestore'
+New-Item -ItemType Directory -Force -Path $localDir | Out-Null
+# Directory was secured and verified by the controller using PowerShell 7.
+# Verify existing DACL in the same PowerShell 7 runtime as the controller.
+$acl = Get-Acl -LiteralPath $localDir
+$allowed = @([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value, 'S-1-5-18')
+if (-not $acl.AreAccessRulesProtected) { throw 'Local directory permissions need review.' }
+foreach ($rule in $acl.Access) {
+    $ruleSid = $rule.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value
+    if ($rule.AccessControlType -eq 'Allow' -and $ruleSid -notin $allowed) { throw 'Unexpected local directory access.' }
+}
+$keyPath = Join-Path $localDir 'id_rsa_phase9'
+Write-Host 'This window performs LOCAL setup only; no router access or scheduled task.'
+Write-Host 'Never paste passwords or key passphrases into chat.'
+if (-not (Test-Path -LiteralPath $keyPath)) {
+    Write-Host 'Create a strong NONEMPTY key passphrase at the next hidden prompts.'
+    & ssh-keygen.exe -t rsa -b 3072 -a 100 -f $keyPath
+    if ($LASTEXITCODE -ne 0) { throw 'Key creation did not complete.' }
+}
+Write-Host ''
+Write-Host 'Use these non-secret answers in the setup prompts:'
+Write-Host 'Ethernet address: 10.0.0.10'
+Write-Host ('Private key: ' + $keyPath)
+Write-Host ('Public key: ' + $keyPath + '.pub')
+Write-Host 'Host fingerprint: [PUBLIC_KEY_FINGERPRINT_1]'
+Write-Host 'Trust confirmation: TRUST [PUBLIC_KEY_FINGERPRINT_1]'
+Write-Host 'Then enter your key passphrase and existing Telnet management password at hidden prompts.'
+Write-Host ''
+& $python -m dlink_ssh_restore.cli setup
+if ($LASTEXITCODE -eq 0) { Write-Host 'Local setup completed. Return to chat and say setup is complete.' }
+else { Write-Host 'Setup did not complete. Do not post any secret here; report only the error code.' }
+Read-Host 'Press Enter to close this window'

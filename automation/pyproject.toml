@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "dlink-ssh-restore"
+version = "0.1.0"
+description = "Device-specific temporary root SSH restoration for the D-Link DSL-G2562DG"
+license = "MIT"
+license-files = ["LICENSE"]
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = ["paramiko>=4,<5", "keyring>=25,<27"]
+[project.optional-dependencies]
+test = ["pytest>=8,<10"]
+[project.scripts]
+dlink-ssh = "dlink_ssh_restore.cli:main"
+[tool.setuptools.packages.find]
+where = ["src"]
+[tool.setuptools.package-data]
+dlink_ssh_restore = ["assets/*.sh"]
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["live: explicitly authorized real-router RAM integration; skipped by default"]
+
+[tool.ruff]
+target-version = "py312"
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

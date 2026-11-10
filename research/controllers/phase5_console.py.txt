@@ -1,0 +1,122 @@
+"""Local-only Phase 5 read-only console collector. No credential literals."""
+import datetime
+import json
+import os
+from pathlib import Path
+import re
+import select
+import socket
+import sys
+import time
+
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
+BASE = Path(os.environ['LOCALAPPDATA']) / 'DLinkResearch'
+manifest = json.loads((BASE / 'firmware/filesystem-manifest.json').read_text())
+binary = Path(manifest['/usr/sbin/ams_cli']['file']).read_bytes()
+account = binary[0x18864:0x18a64].split(b'\0', 1)[0]
+secret = binary[0x18a64:0x18c64].split(b'\0', 1)[0]
+assert account == b'root' and 0 < len(secret) < 64
+
+
+class Console:
+    def __init__(self):
+        self.sock = socket.create_connection(('10.0.0.2', 23), timeout=5)
+        self.sock.setblocking(False)
+        self.pending = b''
+
+    def read(self, seconds=1, until=None):
+        end = time.monotonic() + seconds
+        output = bytearray()
+        while time.monotonic() < end:
+            ready, _, _ = select.select([self.sock], [], [], max(0, end-time.monotonic()))
+            if not ready:
+                break
+            chunk = self.sock.recv(16384)
+            if not chunk:
+                break
+            self.pending += chunk
+            while self.pending:
+                if self.pending[0] != 255:
+                    output.append(self.pending[0])
+                    self.pending = self.pending[1:]
+                    continue
+                if len(self.pending) < 2:
+                    break
+                op = self.pending[1]
+                if op == 255:
+                    output.append(255)
+                    self.pending = self.pending[2:]
+                elif op in (251, 252, 253, 254):
+                    if len(self.pending) < 3:
+                        break
+                    option = self.pending[2]
+                    self.pending = self.pending[3:]
+                    if op == 251:
+                        self.sock.sendall(bytes([255, 254, option]))
+                    elif op == 253:
+                        self.sock.sendall(bytes([255, 252, option]))
+                elif op == 250:
+                    i = self.pending.find(bytes([255, 240]), 2)
+                    if i < 0:
+                        break
+                    self.pending = self.pending[i+2:]
+                else:
+                    self.pending = self.pending[2:]
+            if len(output) > 524288:
+                raise RuntimeError('Output limit')
+            if until and until in output.replace(b'\r', b''):
+                break
+        return output.decode('utf8', 'replace').replace('\r', '')
+
+    def send(self, text):
+        self.sock.sendall(text.encode() + b'\r\n')
+
+
+def sanitize(text):
+    text = text.replace(secret.decode(), '[credential omitted]')
+    if re.search(r'-----BEGIN .*PRIVATE KEY|\$(?:1|2[aby]|5|6|y)\$[./A-Za-z0-9]', text):
+        raise RuntimeError('Sensitive pattern: output withheld')
+    return re.sub(r'\x1b\[[0-9;?]*[A-Za-z]', '', text)
+
+
+commands = json.loads(Path(sys.argv[1]).read_text(encoding='utf8'))
+destination = Path(sys.argv[2])
+records = []
+c = Console()
+try:
+    assert 'LOGIN#' in c.read()
+    c.sock.sendall(account + b'\r\n')
+    assert 'PASS#' in c.read()
+    c.sock.sendall(secret + b'\r\n')
+    assert 'AMS#' in c.read()
+    c.send('sh')
+    assert '#' in c.read()
+    # Avoid interactive-shell history storage; process environment only.
+    c.send('unset HISTFILE; HISTSIZE=0')
+    c.read()
+    for index, item in enumerate(commands):
+        name, command = item['name'], item['command']
+        assert '\n' not in command and '\r' not in command
+        marker = '__P5_END_%d__' % index
+        c.send(command + "; printf '\\n" + marker + "\\n'")
+        text = c.read(item.get('timeout', 15), until=('\n'+marker+'\n').encode())
+        if '\n'+marker+'\n' not in text:
+            raise RuntimeError('Completion marker missing: '+name)
+        # Remove the echoed command, retaining command output only.
+        lines = text.splitlines()
+        stop = next(i for i, line in enumerate(lines) if line == marker)
+        start = next((i+1 for i, line in enumerate(lines[:stop]) if marker in line), 0)
+        output = '\n'.join(lines[start:stop]).strip()
+        output = sanitize(output)
+        record = {'name': name, 'command': command, 'output': output}
+        records.append(record)
+        destination.write_text(json.dumps({'target':'10.0.0.2:23','time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'records':records}, indent=2), encoding='utf8')
+        print('OBSERVATION '+name+'\n'+output, flush=True)
+    c.send('exit')
+    assert 'AMS#' in c.read()
+    c.send('exit')
+    c.read()
+    print('Closed shell and CLI.', flush=True)
+finally:
+    c.sock.close()

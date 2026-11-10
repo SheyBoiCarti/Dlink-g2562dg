@@ -1,0 +1,41 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:06:19.786707+00:00",
+  "records": [
+    {
+      "name": "persistent_layout",
+      "command": "ls -ld /data /data/* /var/dropbear /var/dropbear/* 2>/dev/null; df -Pk /data",
+      "output": "drwxr-xr-x    4 admin    admin            0 Jan  1 02:00 /data\ndrw-r--r--    2 admin    admin            0 Jan  1 02:06 /data/log\ndrwxr-xr-x    2 admin    admin           60 Jan  1 02:00 /var/dropbear\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key\nFilesystem           1024-blocks    Used Available Capacity Mounted on\n/dev/mtdblock7            2048       576      1472  28% /data"
+    },
+    {
+      "name": "root_keydir",
+      "command": "ls -ld /etc/config /etc/config/* /.ssh /root/.ssh /etc/dropbear 2>/dev/null",
+      "output": "drwxr-xr-x    2 admin    admin            0 Dec  9  2022 /etc/config\n-rw-r--r--    1 admin    admin         1642 Dec  9  2022 /etc/config/dhcp6c\n-rw-r--r--    1 admin    admin          270 Dec  9  2022 /etc/config/dhcp6s\n-rw-r--r--    1 admin    admin          335 Dec  9  2022 /etc/config/fstab"
+    },
+    {
+      "name": "boot_mounts",
+      "command": "grep -n -E 'mount|mtd|/data|/var|rc.local|init.d|sys.init|tdsmgr|dropbear|telnet|sh$' /etc/rc.d/rcS; cat /usr/syscfg/sys.init_after.sh; grep -n -E 'genSysFiles|passwd|chpasswd|tdsmgr|sys.init|dropbear|telnet' /usr/syscfg/sys.init.sh",
+      "output": "1:#! /bin/sh\n19:echo \"mount file system\"\n21:mount -t proc  proc /proc\n22:mount -t sysfs sysfs /sys\n23:mount -t tmpfs tmpfs /dev\n24:mount -t tmpfs -o mode=0775 tmpfs /mnt\n25:mount -t tmpfs -o nodev,size=512m none /tmp\n26:mkdir /tmp/var\n27:mkdir /tmp/var/dhcpv6\n28:mkdir /var/run\n36:mknod   /dev/mtd0               c  90  0\n37:mknod   /dev/mtd1               c  90  2\n38:mknod   /dev/mtd2               c  90  4\n39:mknod   /dev/mtd3               c  90  6\n40:mknod   /dev/mtd4               c  90  8\n41:mknod   /dev/mtd5               c  90  10\n42:mknod   /dev/mtd6               c  90  12\n43:mknod   /dev/mtd7               c  90  14\n44:mknod   /dev/mtd14              c  90  28\n46:mknod   /dev/mtdblock0          b  31  0\n47:mknod   /dev/mtdblock1          b  31  1\n48:mknod   /dev/mtdblock2          b  31  2\n49:mknod   /dev/mtdblock3          b  31  3\n50:mknod   /dev/mtdblock4          b  31  4\n51:mknod   /dev/mtdblock5          b  31  5\n52:mknod   /dev/mtdblock6          b  31  6\n53:mknod   /dev/mtdblock7          b  31  7\n54:mknod   /dev/mtdblock14         b  31  14\n64:mount -t devpts devpts /dev/pts\n164:#init default flows\n195:/usr/syscfg/sys.init.sh\n197:/usr/syscfg/usb/dongle/dongle_reset.sh\n199:/bin/sh\n#!/bin/sh\n#\n# usage: sys.init_after.sh\n#\n\nsysmgr &\nsrvcmgr &\nutils &\nneighevent 1>/dev/null 2>/dev/null &\n\nuhttpd -n 10 -f -D -p :80 -h /www -s :443 -K /etc/uhttpd.key.us -C /etc/uhttpd.crt  &\n\n\n/usr/syscfg/mdev.sh\n\nramonitor&\n\n#����vlan ebtables����\nvlan_policy_init.sh &\n\n3:# usage: sys.init.sh\n16:genSysFiles()\n21:             echo \"$login::0:0:Adminstrator:/:/bin/sh\" > /etc/passwd\n23:             chpasswd.sh $login $pass\n27:genSysFiles\n29:echo \"nobody:x:65534:65534:nobody:/nonexistent:/bin/sh\" >>/etc/passwd\n84:tdsmgr &"
+    },
+    {
+      "name": "key_metadata",
+      "command": "for d in /var/dropbear /tmp/dropbear /data/dropbear /data/config /data/etc; do ls -ld \"$d\" 2>/dev/null; done; for p in /var/dropbear/* /tmp/dropbear/* /data/dropbear/*; do [ -e \"$p\" ] && ls -ld \"$p\"; done; ls -ld /etc/shells /bin/sh; [ ! -f /etc/shells ] || cat /etc/shells",
+      "output": "drwxr-xr-x    2 admin    admin           60 Jan  1 02:00 /var/dropbear\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key\nls: /etc/shells: No such file or directory\nlrwxrwxrwx    1 admin    admin            7 Dec  9  2022 /bin/sh -> busybox"
+    },
+    {
+      "name": "service_startup_references",
+      "command": "grep -n -E 'dropbear|telnetd|ams_cli|authorized_keys|/data|/etc/passwd' /usr/syscfg/*.sh /etc/init.d/* 2>/dev/null | grep -v -i -E 'password|passwd=|pass=|pwd='",
+      "output": "/usr/syscfg/proftpd.sh:25:      echo \"AuthUserFile /etc/passwd\" >> $PROFTPD_FILE\n/usr/syscfg/proftpdbase.sh:23:  echo \"AuthUserFile /etc/passwd\" >> $PROFTPD_FILE\n/usr/syscfg/sys.init.sh:21:             echo \"$login::0:0:Adminstrator:/:/bin/sh\" > /etc/passwd\n/usr/syscfg/sys.init.sh:29:echo \"nobody:x:65534:65534:nobody:/nonexistent:/bin/sh\" >>/etc/passwd\n/usr/syscfg/tr069_proc.sh:43:    if [ -f \"/data/log/debug.txt\" ];then\n/usr/syscfg/tr069_proc.sh:44:        cp /data/log/debug.txt ${log_filename}\n/etc/init.d/telnet:22:  ( /etc/init.d/dropbear enabled 2> /dev/null && grep -qs \"^ssh-\" /etc/dropbear/authorized_keys ) || \\\n/etc/init.d/telnet:23:  ( /etc/init.d/sshd enabled 2> /dev/null && grep -qs \"^ssh-\" \"$(get_root_home /etc/passwd)\"/.ssh/authorized_keys )\n/etc/init.d/telnet:28:       ! has_root_pwd /etc/passwd && ! has_root_pwd /etc/shadow ) || \\\n/etc/init.d/telnet:29:     ( ! /etc/init.d/dropbear enabled 2> /dev/null && ! /etc/init.d/sshd enabled 2> /dev/null );\n/etc/init.d/telnet:31:          service_start /usr/sbin/telnetd -l /bin/login.sh\n/etc/init.d/telnet:36:  service_stop /usr/sbin/telnetd"
+    },
+    {
+      "name": "sockets",
+      "command": "netstat -lnt 2>/dev/null | awk 'NR<3 || $4 ~ /:(22|23)$/'; ip -o -4 addr show br0 2>/dev/null; ip -o link show 2>/dev/null | awk '{print $1,$2}'",
+      "output": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN      \n8: br0    inet 10.0.0.2/24 brd 10.0.0.255 scope global br0\\       valid_lft forever preferred_lft forever\n1: lo:\n2: tunl0@NONE:\n3: gre0@NONE:\n4: gretap0@NONE:\n5: sit0:\n6: ip6tnl0:\n7: eth0:\n8: br0:\n9: br1:\n10: eth0.2:\n11: nas0:\n12: nas_p1:\n13: eth0.3:\n14: nas1:\n15: eth0.4:\n16: nas0_8_35:\n17: eth0.5:\n18: wlan0:\n19: wlan-va1:\n20: wlan-va2:\n21: wlan-va3:\n22: wds0:\n23: wds1:\n24: wds2:\n25: wds3:\n26: wl0_ext:\n27: wl0_0_ext:\n28: wl0_1_ext:\n29: wl0_2_ext:\n30: wl0_3_ext:\n31: wlan1:\n32: wlan-vai1:\n33: wlan-vai2:\n34: wlan-vai3:\n35: wds4:\n36: wds5:\n37: wds6:\n38: wds7:\n39: mon0:\n40: wl1_ext:\n41: wl1_0_ext:\n42: wl1_1_ext:\n43: wl1_2_ext:\n44: wl1_3_ext:"
+    },
+    {
+      "name": "flash_geometry",
+      "command": "for d in /sys/class/mtd/mtd[0-9]*; do printf '%s ' \"${d##*/}\"; for f in name type size erasesize writesize oobsize offset flags; do [ ! -r \"$d/$f\" ] || { printf '%s=' \"$f\"; tr '\\n' ' ' < \"$d/$f\"; }; done; printf '\\n'; done",
+      "output": "~ #"
+    }
+  ]
+}

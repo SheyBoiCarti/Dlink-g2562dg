@@ -1,0 +1,79 @@
+{
+  "method": "Existing local ELF/Capstone tooling, not REA; matching libraries inspected offline without executing router binaries.",
+  "artifacts": [
+    {
+      "path": "/lib/libuClibc-0.9.32.1-git.so",
+      "md5": "e465bd1a1f51ad11e766692113a8fb5c",
+      "sha256": "2fc4f2e1deec3504a436947cde41a207c10e1c50b609bb7291008bcabb730030",
+      "live_md5_match": true,
+      "symbols": [
+        {
+          "name": "grantpt",
+          "address": "0x4c5b0",
+          "size": 8
+        },
+        {
+          "name": "unlockpt",
+          "address": "0x4c5b8",
+          "size": 120
+        },
+        {
+          "name": "ptsname_r",
+          "address": "0x4c630",
+          "size": 236
+        },
+        {
+          "name": "ttyname",
+          "address": "0x3547c",
+          "size": 60
+        },
+        {
+          "name": "ttyname_r",
+          "address": "0x352ec",
+          "size": 400
+        }
+      ]
+    },
+    {
+      "path": "/lib/libutil-0.9.32.1-git.so",
+      "md5": "ba1b8e4e7ce4491aa6c48591fa8bf0f8",
+      "sha256": "71951c46350bbda1fd5d92d0463d080c3232ef85d640d960eff433bad306490b",
+      "live_md5_match": true,
+      "symbols": [
+        {
+          "name": "unlockpt",
+          "address": "0x0",
+          "size": 0
+        },
+        {
+          "name": "ttyname_r",
+          "address": "0x0",
+          "size": 0
+        },
+        {
+          "name": "grantpt",
+          "address": "0x0",
+          "size": 0
+        },
+        {
+          "name": "ptsname_r",
+          "address": "0x0",
+          "size": 0
+        },
+        {
+          "name": "openpty",
+          "address": "0xaa0",
+          "size": 244
+        }
+      ]
+    }
+  ],
+  "observations": [
+    "Vendor Dropbear imports openpty and ttyname; contains openpty allocation and ttyname failure strings.",
+    "Matching uClibc ttyname_r disassembly at 0x352ec scans device directories; missing /proc alone is not established as a PTY root cause."
+  ],
+  "limits": [
+    "Dynamic PTY failure point is not yet captured.",
+    "A populated devpts mount does not prove the chroot view resolves its slave nodes correctly."
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "time_utc": "2026-10-19T19:47:43.048957+00:00",
+  "approval": "Owner approved temporary RAM integration, manual monitor and cleanup; no scheduled task or reboot",
+  "steps": [
+    {
+      "name": "retained_original_telnet_uid0",
+      "result": true
+    },
+    {
+      "name": "original_service_baseline",
+      "result": "1037 telnetd -l /usr/sbin/ams_cli -p 23\n3244 dropbear -r /var/dropbear/rsa_host_key -p 22"
+    },
+    {
+      "name": "restore",
+      "result": {
+        "uid": 0,
+        "interactive": true,
+        "state": "restored"
+      }
+    },
+    {
+      "name": "status",
+      "result": {
+        "state": "ready",
+        "uid": 0,
+        "interactive": true
+      }
+    },
+    {
+      "name": "repeat_restore",
+      "result": {
+        "uid": 0,
+        "interactive": true,
+        "state": "already_ready"
+      }
+    },
+    {
+      "name": "rollback",
+      "result": {
+        "state": "removed"
+      }
+    },
+    {
+      "name": "post_rollback_status",
+      "result": {
+        "state": "absent"
+      }
+    },
+    {
+      "name": "original_services_unchanged",
+      "result": true
+    },
+    {
+      "name": "same_boot",
+      "result": true
+    },
+    {
+      "name": "host_identity_unchanged",
+      "result": true
+    },
+    {
+      "name": "fresh_original_telnet_uid0",
+      "result": true
+    }
+  ],
+  "passed": true
+}

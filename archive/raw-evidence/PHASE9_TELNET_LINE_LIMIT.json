@@ -1,0 +1,17 @@
+{
+  "read_only_probe": true,
+  "records": [
+    {
+      "payload_chars": 512,
+      "result": "512"
+    },
+    {
+      "payload_chars": 1536,
+      "result": "telnet_timeout"
+    },
+    {
+      "payload_chars": 2048,
+      "result": "telnet_timeout"
+    }
+  ]
+}

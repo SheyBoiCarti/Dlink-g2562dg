@@ -1,0 +1,18 @@
+[
+  {
+    "name": "extroot callers and content",
+    "command": "ls -l /init /sbin/init /etc/preinit /sbin/mount_root /lib/functions/boot.sh 2>/dev/null; cat /etc/preinit /lib/preinit/00_extroot.conf /lib/preinit/50_determine_usb_root /lib/preinit/55_determine_extroot_sysupgrade /lib/preinit/60_pivot_usb_root 2>/dev/null"
+  },
+  {
+    "name": "scriptfiles and dispatch references",
+    "command": "ls -l /usr/syscfg/ScriptFiles; grep -rnE 'ScriptFiles|/etc/preinit|/lib/preinit|mount_root|rc.local|autorun' /etc/rc.d /usr/syscfg /etc/inittab 2>/dev/null | head -70; for f in /usr/sbin/tdsmgr /usr/sbin/sysmgr /usr/sbin/srvcmgr; do echo $f; strings $f | grep -E '^(/data/[^ ]*|.*ScriptFiles.*|.*authorized_keys.*|.*sys.init.sh.*)$' | head -30; done"
+  },
+  {
+    "name": "system init nonsecret control flow",
+    "command": "grep -nE 'tdsmgr|^[[:space:]]*(export |mkdir |mount |sleep |ulimit |cd |if |fi$|else$)|/usr/syscfg/|/etc/rc.d/' /usr/syscfg/sys.init.sh | grep -vE 'passwd|chpasswd|shadow|password'"
+  },
+  {
+    "name": "public host identity final",
+    "command": "dropbearkey -y -f /var/dropbear/rsa_host_key 2>/dev/null | grep '^ssh-rsa '; cat /proc/uptime; test ! -e /tmp/dlink-phase6a && echo clean; id -u"
+  }
+]

@@ -1,0 +1,26 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:05:52.007234+00:00",
+  "records": [
+    {
+      "name": "mount_summary",
+      "command": "awk '{n=split($4,a,\",\");for(i=1;i<=n;i++)if(a[i]==\"ro\"||a[i]==\"rw\")print $2,$3,a[i]}' /proc/mounts; cat /proc/filesystems",
+      "output": "/ rootfs rw\n/ jffs2 ro\n/dev devtmpfs rw\n/proc proc rw\n/sys sysfs rw\n/dev tmpfs rw\n/mnt tmpfs rw\n/tmp tmpfs rw\n/dev/pts devpts rw\n/data jffs2 rw\nnodev   sysfs\nnodev   rootfs\nnodev   ramfs\nnodev   bdev\nnodev   proc\nnodev   tmpfs\nnodev   devtmpfs\nnodev   sockfs\nnodev   pipefs\nnodev   configfs\nnodev   devpts\n        ext3\n        ext2\n        ext4\n        squashfs\n        vfat\n        msdos\n        hfsplus\nnodev   cifs\n        ntfs\nnodev   jffs2\n        fuseblk\nnodev   fuse\nnodev   fusectl\nnodev   mtd_inodefs"
+    },
+    {
+      "name": "dropbear_process",
+      "command": "for d in /proc/[0-9]*; do [ -r \"$d/comm\" ] || continue; [ \"$(cat \"$d/comm\")\" = dropbear ] || continue; printf 'pid=%s exe=' \"${d##*/}\"; readlink \"$d/exe\"; tr '\\000' '\\n' < \"$d/cmdline\" | awk '$0 ~ /^[-a-zA-Z0-9_.\\/:]+$/ {print}'; done",
+      "output": "pid=3244 exe=/usr/sbin/dropbear\ndropbear\n-r\n/var/dropbear/rsa_host_key\n-p\n22"
+    },
+    {
+      "name": "key_path_search",
+      "command": "find /etc /var /data /root -name '*dropbear*' -o -name authorized_keys -o -name .ssh 2>/dev/null",
+      "output": ""
+    },
+    {
+      "name": "directory_structure",
+      "command": "ls -ld /data/* /etc/config/* /var/* /etc/init.d/* 2>/dev/null",
+      "output": "~ #"
+    }
+  ]
+}

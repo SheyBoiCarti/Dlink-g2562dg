@@ -1,0 +1,22 @@
+{
+  "time_utc": "2026-10-19T19:40:05.661158+00:00",
+  "config_valid": true,
+  "local_address": "10.0.0.10",
+  "checks": {
+    "telnet-password_present": true,
+    "key-passphrase_present": true,
+    "protected_rsa_public_private_match": true,
+    "host_identity_matches": true,
+    "telnet_uid0": true,
+    "boot_id_available": true,
+    "resource_state": "absent",
+    "provisioning_preflight": "passed_after_firewall_compatibility_fix"
+  },
+  "listeners": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN",
+  "root_mount": "/ rootfs rw\n/ jffs2 ro,relatime\n/tmp tmpfs rw,nodev,relatime,size=524288k",
+  "memory": "MemAvailable:      40680 kB",
+  "ipv4_input": "-P INPUT DROP\n-A INPUT -m pkttype --pkt-type multicast -j ACCEPT\n-A INPUT -j ipsec_vpn\n-A INPUT -j anti_attack\n-A INPUT -j SCL_IP_FILTER_ACCEPT\n-A INPUT -j SCL_IP_DROP\n-A INPUT -j upnp_blacklist\n-A INPUT -j dhcp_lanportmap\n-A INPUT -j secondary_lan_in\n-A INPUT -j service_list\n-A INPUT -j dhcp_relay\n-A INPUT -j gre_tunnel\n-A INPUT -j l2tp_tunnel",
+  "ipv6_input": "-P INPUT ACCEPT\n-A INPUT -j SCL_IP_FILTER_ACCEPT_V6\n-A INPUT -j SCL_IP_DROP_V6\n-A INPUT -j service_list",
+  "recheck_time_utc": "2026-10-19T19:42:13.566622+00:00",
+  "private_key_acl": "current user and SYSTEM only"
+}

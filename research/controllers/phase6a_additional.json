@@ -1,0 +1,14 @@
+[
+  {
+    "name": "mount_propagation",
+    "command": "awk '$5==\"/\" || $5==\"/tmp\" || $5==\"/dev\" || $5==\"/dev/pts\" {printf \"%s %s \",$5,$6;for(i=7;i<=NF && $i!=\"-\";i++)printf \"%s \",$i;print \"\"}' /proc/self/mountinfo"
+  },
+  {
+    "name": "input_auxiliary_chains",
+    "command": "for c in ipsec_vpn anti_attack SCL_IP_FILTER_ACCEPT SCL_IP_ACCEPT SCL_IP_DROP upnp_blacklist dhcp_lanportmap secondary_lan_in dhcp_relay gre_tunnel l2tp_tunnel; do iptables -S \"$c\" 2>/dev/null; done | awk '{for(i=1;i<=NF;i++)if($i==\"-s\"||$i==\"-d\")$(i+1)=\"[address withheld]\";print}'"
+  },
+  {
+    "name": "root_view_layout",
+    "command": "ls -ld /etc/dropbear /tmp/dlink-phase6a 2>/dev/null; ls -l /bin/sh /usr/bin/id /bin/uname /etc/passwd /etc/group; df -Pk /tmp"
+  }
+]

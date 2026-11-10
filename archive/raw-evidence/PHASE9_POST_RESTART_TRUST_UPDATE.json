@@ -1,0 +1,8 @@
+{
+  "time_utc": "2026-10-19T19:58:36.359789+00:00",
+  "authorization": "Owner explicitly approved verified post-restart trust update and repeated temporary RAM test",
+  "old_fingerprint": "[PUBLIC_KEY_FINGERPRINT_1]",
+  "new_fingerprint": "[PUBLIC_KEY_FINGERPRINT_2]",
+  "owner_and_key_paths_preserved": true,
+  "scheduled_task_authorized": false
+}

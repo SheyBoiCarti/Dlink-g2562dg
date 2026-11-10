@@ -1,0 +1,14 @@
+[
+  {
+    "name": "boot_hook_caller",
+    "command": "strings /usr/sbin/tdsmgr | grep -E '^/usr/syscfg/sys.init_after.sh$|^process_init_after$'; ls -l /etc/rc.d/rc.shutdown; strings /usr/sbin/utils | grep -E '^mount -t jffs2|^umount /data|^/dev/mtdblock7|^/data$|^rm -rf /data|^flash_erase'"
+  },
+  {
+    "name": "runtime_key_status",
+    "command": "ls -ld /etc/dropbear /var/dropbear /var/dropbear/rsa_host_key /.ssh /root/.ssh 2>/dev/null"
+  },
+  {
+    "name": "services_final",
+    "command": "netstat -lnt 2>/dev/null | awk 'NR<3 || $4 ~ /:(22|23)$/'; id -u; awk '$3==\"jffs2\" {print $2,$3,$4}' /proc/mounts"
+  }
+]

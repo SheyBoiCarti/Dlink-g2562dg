@@ -1,0 +1,19 @@
+try {
+$ErrorActionPreference = 'Stop'
+$Host.UI.RawUI.WindowTitle = 'D-Link Phase 9 - LOCAL secure setup only'
+$project = '<WORKSPACE_OR_USER_HOME>\dlink-g2562dg'
+$python = Join-Path $project 'automation\.venv312\Scripts\python.exe'
+$localDir = Join-Path $env:LOCALAPPDATA 'DLinkSSHRestore'
+New-Item -ItemType Directory -Force -Path $localDir | Out-Null
+# Directory was secured and verified by the controller using PowerShell 7.
+# Verify DACL here; Windows PowerShell 5.1 Set-Acl requests an unavailable privilege.
+$acl = Get-Acl -LiteralPath $localDir
+$allowed = @([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value, 'S-1-5-18')
+if (-not $acl.AreAccessRulesProtected) { throw 'Local directory permissions need review.' }
+foreach ($rule in $acl.Access) {
+    $ruleSid = $rule.IdentityReference.Translate([System.Security.Principal.SecurityIdentifier]).Value
+    if ($rule.AccessControlType -eq 'Allow' -and $ruleSid -notin $allowed) { throw 'Unexpected local directory access.' }
+}
+
+Write-Output 'PASS: secure directory verified in Windows PowerShell 5.1'
+} catch { Write-Output $_.Exception.Message; exit 1 }

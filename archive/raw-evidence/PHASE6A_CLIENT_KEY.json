@@ -1,0 +1,8 @@
+{
+  "public_fingerprint": "[PUBLIC_KEY_FINGERPRINT_3]",
+  "key_type": "ssh-rsa",
+  "bits": 3072,
+  "private_key_encrypted": false,
+  "private_key_off_router": true,
+  "local_acl": "current Windows user and SYSTEM only"
+}

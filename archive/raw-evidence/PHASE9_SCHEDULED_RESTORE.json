@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-10-19T20:01:22.209944+00:00",
+  "scheduled_task_authorized": true,
+  "telnet_uid0": true,
+  "state": "owned",
+  "exposure_and_mount_audit": "passed",
+  "ssh_proof": {
+    "uid": 0,
+    "interactive": true
+  },
+  "pinned_host_identity_matches": true,
+  "listeners": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 10.0.0.2:2222           0.0.0.0:*               LISTEN      \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN",
+  "original_services": "996 telnetd -l /usr/sbin/ams_cli -p 23\n2680 dropbear -r /var/dropbear/rsa_host_key -p 22",
+  "root_mount": "/ jffs2 ro,relatime"
+}

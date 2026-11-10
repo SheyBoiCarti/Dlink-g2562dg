@@ -1,0 +1,7 @@
+{
+  "source": "http://ftp.d-link.co.za/DSL/DSL-G2562DG%20(Telkom)/firmware/DSL-G2562DG_TK_1.00TK_V1.2.12ak_20210420_telkom-Image-all.bin",
+  "bytes": 24272267,
+  "sha256": "2f7cf1c4992f6521265480dbb78d4989a80bf090ff636a3081ce6f1e275ebbd7",
+  "installed_build_match": false,
+  "purpose": "offline analysis only"
+}

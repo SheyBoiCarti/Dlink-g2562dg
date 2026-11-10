@@ -1,0 +1,18 @@
+[
+  {
+    "name": "boot references bounded",
+    "command": "grep -rn '/data' /etc/rc.d /etc/init.d /usr/syscfg 2>/dev/null | head -60"
+  },
+  {
+    "name": "hook paths",
+    "command": "cat /etc/init.d/cron /etc/hotplug2.rules; ls -la /etc/hotplug.d/block /etc/hotplug.d/iface; cat /proc/sys/kernel/hotplug; ls -l /sbin/hotplug* /sbin/mdev /usr/syscfg/mdev.sh; ps | grep -E 'cron|hotplug|mdev|dropbear|telnet'"
+  },
+  {
+    "name": "profile inventory",
+    "command": "ls -l /etc/profile /etc/shells /etc/securetty; /bin/busybox --list | grep -E '^(tty|stty|script|setsid|chroot|readlink|stat)$'; ls -l /lib/libc.so* /lib/libuClibc*; ip6tables -S service_list"
+  },
+  {
+    "name": "safe script references",
+    "command": "grep -nE '/data|mount|cron|autorun|rc.local|hotplug' /usr/syscfg/sys.init.sh /usr/syscfg/mdev.sh /etc/rc.d/histart 2>/dev/null"
+  }
+]

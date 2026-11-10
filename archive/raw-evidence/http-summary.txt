@@ -1,0 +1,5 @@
+UTC 2026-10-19T16:57:16.770236+00:00 target=10.0.0.2
+{"scheme": "http", "port": 80, "status": 302, "server_products": [], "server_header_present": false, "content_type": "absent", "auth_challenge": "absent", "cookie_header_present": false, "redirect_present": true, "authentication": "Unknown; a login form or redirect may require authentication"}
+{"scheme": "https", "port": 443, "error": "SSLError"}
+{"scheme": "http", "port": 8080, "error": "TimeoutError"}
+{"scheme": "https", "port": 8443, "error": "TimeoutError"}

@@ -1,0 +1,20 @@
+{
+  "time_utc": "2026-10-19T19:29:14.769619+00:00",
+  "python": "3.12.14",
+  "local_address": "10.0.0.10",
+  "ports": {
+    "22": "reachable",
+    "23": "reachable",
+    "2222": "not_reachable"
+  },
+  "expected_fingerprint": "[PUBLIC_KEY_FINGERPRINT_1]",
+  "telnet_login_prompt_seen": true,
+  "stock_ssh_identity": "matched",
+  "observed_fingerprint": "[PUBLIC_KEY_FINGERPRINT_1]",
+  "scheduled_task": "absent",
+  "credential_manager_read_only_probe": {
+    "vault_probe": "credential_missing_run_setup",
+    "expected": "credential_missing_run_setup",
+    "wrote_credentials": false
+  }
+}

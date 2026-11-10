@@ -1,0 +1,26 @@
+[
+  {
+    "name": "pty paths",
+    "command": "id; ls -ld /dev /dev/pts /dev/ptmx /dev/tty /dev/pts/ptmx /bin/sh /proc; readlink /bin/sh; awk '$5==\"/dev\" || $5==\"/dev/pts\" {print}' /proc/self/mountinfo; cat /proc/sys/kernel/pty/nr /proc/sys/kernel/pty/max; cat /proc/tty/drivers"
+  },
+  {
+    "name": "shell and tools",
+    "command": "printf 'shell flags: %s\\n' \"$-\"; tty; stty -a; command -v strace; command -v script; command -v setsid; command -v python; command -v unshare; ls -l /etc/profile /etc/shells /etc/securetty /etc/login.defs /lib/libutil* 2>/dev/null; test ! -e /tmp/dlink-phase6a && echo phase6a-absent"
+  },
+  {
+    "name": "kernel config",
+    "command": "if test -r /proc/config.gz; then zcat /proc/config.gz | grep -E 'CONFIG_(UNIX98_PTYS|DEVPTS|LEGACY_PTYS|DEVTMPFS)'; else echo no-proc-config; fi; grep -E 'devpts|proc|tmpfs' /proc/filesystems; ls -l /dev/pts"
+  },
+  {
+    "name": "boot hook inventory",
+    "command": "ls -ld /data; ls -la /data; cat /etc/inittab; cat /etc/rc.d/rcS; cat /usr/syscfg/sys.init_after.sh; ls -l /etc/rc.local /etc/hotplug* /etc/crontabs /var/spool/cron /etc/init.d/cron 2>/dev/null"
+  },
+  {
+    "name": "boot hook references",
+    "command": "grep -rnE '/data|rc.local|hotplug|cron|autorun|/mnt|/home' /etc/rc.d /etc/init.d /usr/syscfg --include='*.sh' 2>/dev/null | head -100"
+  },
+  {
+    "name": "network policy",
+    "command": "ip -o -4 addr show; ip -o -6 addr show; iptables -S INPUT; iptables -S service_list; ip6tables -S INPUT; netstat -lnt; awk '$2==\"/\" || $2==\"/data\" || $2==\"/tmp\" {print}' /proc/mounts; df -k /data /tmp"
+  }
+]

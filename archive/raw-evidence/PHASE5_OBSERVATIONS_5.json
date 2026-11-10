@@ -1,0 +1,46 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:10:12.816266+00:00",
+  "records": [
+    {
+      "name": "mount_sources",
+      "command": "awk '{if ($3==\"jffs2\") print $1,$2,$3,$4}' /proc/mounts",
+      "output": "awk '{if ($3==\"jffs2\") print $1,$2,$3,$4}' /proc/mounts; printf '\\n__P5_END_\n0__\\n'\nmtd:rootfs / jffs2 ro,relatime\n/dev/mtdblock7 /data jffs2 rw,relatime"
+    },
+    {
+      "name": "mtd_geometry",
+      "command": "cat /sys/class/mtd/mtd0/type /sys/class/mtd/mtd0/size /sys/class/mtd/mtd0/erasesize /sys/class/mtd/mtd0/writesize /sys/class/mtd/mtd0/oobsize /sys/class/mtd/mtd7/size 2>/dev/null",
+      "output": "nand\n41943040\n131072\n2048\n32\n2097152"
+    },
+    {
+      "name": "account_counts",
+      "command": "awk -F: '{n++; if ($3==0) z++} END {print \"passwd_records=\"n,\"uid0_records=\"z}' /etc/passwd",
+      "output": "passwd_records=2 uid0_records=1"
+    },
+    {
+      "name": "acl_ipv4",
+      "command": "iptables -S service_list; iptables -S SCL_IP_FILTER_ACCEPT; iptables -S SCL_IP_DROP",
+      "output": "-N service_list\n-A service_list -i lo -j ACCEPT\n-A service_list -i br0 -j ACCEPT\n-A service_list -m state --state RELATED,ESTABLISHED -j ACCEPT\n-N SCL_IP_FILTER_ACCEPT\n-A SCL_IP_FILTER_ACCEPT -j SCL_IP_ACCEPT\n-N SCL_IP_DROP"
+    },
+    {
+      "name": "acl_ipv6",
+      "command": "ip6tables -S 2>/dev/null | awk '{for(i=1;i<=NF;i++){if($i==\"-s\"||$i==\"-d\")$(i+1)=\"[address withheld]\"}print}'",
+      "output": "-P INPUT ACCEPT\n-P FORWARD ACCEPT\n-P OUTPUT ACCEPT\n-N BIND_POLICY\n-N IP6_BIND_POLICY_DEFAULT\n-N SCL_IP_ACCEPT_V6\n-N SCL_IP_DROP_V6\n-N SCL_IP_FILTER_ACCEPT_V6\n-N dial_on_demand_active\n-N flow_accel\n-N ipport_filter\n-N lan_filter\n-N service_list\n-N wan_filter\n-A INPUT -j SCL_IP_FILTER_ACCEPT_V6\n-A INPUT -j SCL_IP_DROP_V6\n-A INPUT -j service_list\n-A FORWARD -p tcp -m tcp --tcp-flags SYN SYN -j TCPMSS --clamp-mss-to-pmtu\n-A FORWARD -j BIND_POLICY\n-A FORWARD -j ipport_filter\n-A FORWARD -j flow_accel\n-A OUTPUT -j dial_on_demand_active\n-A SCL_IP_FILTER_ACCEPT_V6 -j SCL_IP_ACCEPT_V6\n-A dial_on_demand_active -p udp -m udp --dport 53 -j MARK --set-xmark 0x5354/0xffffffff\n-A ipport_filter -i br0 -j lan_filter\n-A ipport_filter -i br1 -j lan_filter\n-A service_list -i lo -j ACCEPT\n-A service_list -i br0 -j ACCEPT\n-A service_list -m state --state RELATED,ESTABLISHED -j ACCEPT\n-A wan_filter -m state --state INVALID,NEW,UNTRACKED -j DROP"
+    },
+    {
+      "name": "config_ssh",
+      "command": "cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Enable; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Port",
+      "output": "122"
+    },
+    {
+      "name": "namespace_features",
+      "command": "for x in unshare nsenter; do command -v \"$x\"; done; ls -l /proc/self/ns/mnt /proc/config.gz 2>/dev/null; if [ -r /proc/config.gz ]; then zcat /proc/config.gz | grep -E 'CONFIG_(NAMESPACES|MOUNT|OVERLAY|JFFS2|MTD_NAND|SQUASHFS)'; fi",
+      "output": "lrwxrwxrwx    1 admin    admin            0 Jan  1 03:31 /proc/self/ns/mnt -> mnt:[4026531840]"
+    },
+    {
+      "name": "root_history_and_startup",
+      "command": "ls -l /.ash_history /root/.ash_history /etc/rc.local /etc/init.d/dropbear /etc/default/dropbear /etc/config/dropbear 2>/dev/null; ls -la /overlay; grep -n -E \"mount|/data|/dev/mtd\" /etc/rc.d/histart /etc/rc.d/rc.shutdown 2>/dev/null",
+      "output": "total 0\ndrwxr-xr-x    2 admin    admin            0 Dec  9  2022 .\ndrwxr-xr-x   18 admin    admin            0 Jan  1 02:00 .."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:05:17.337728+00:00",
+  "records": [
+    {
+      "name": "identity",
+      "command": "id -u; id -g; uname -srm; readlink /proc/1/exe; readlink /proc/$$/exe",
+      "output": "0\n0\nLinux 3.14.18 armv7l\n/bin/busybox\n/bin/busybox"
+    },
+    {
+      "name": "busybox",
+      "command": "busybox 2>&1 | head -n 1; for x in awk stat readlink sha256sum base64 tar dd ip iptables netstat dropbear dropbearkey opkg; do command -v \"$x\"; done",
+      "output": "BusyBox v1.19.4 (2022-12-09 16:04:47 CST) multi-call binary.\n/usr/bin/awk\n/usr/bin/readlink\n/bin/base64\n/bin/tar\n/bin/dd\n/usr/sbin/ip\n/usr/sbin/iptables\n/bin/netstat\n/usr/sbin/dropbear\n/usr/bin/dropbearkey\n/bin/opkg"
+    },
+    {
+      "name": "release",
+      "command": "for f in /etc/openwrt_release /etc/os-release; do if [ -r \"$f\" ]; then grep -E '^(ID|NAME|VERSION_ID|DISTRIB_ID|DISTRIB_RELEASE|DISTRIB_CODENAME|DISTRIB_TARGET|DISTRIB_DESCRIPTION)=' \"$f\"; fi; done",
+      "output": "DISTRIB_ID=\"OpenWrt\"\nDISTRIB_RELEASE=\"Bleeding Edge\"\nDISTRIB_CODENAME=\"barrier_breaker\"\nDISTRIB_TARGET=\"VSPM3XX/generic\"\nDISTRIB_DESCRIPTION=\"OpenWrt Barrier Breaker unknown\""
+    },
+    {
+      "name": "mounts",
+      "command": "awk '{print $1, $2, $3, $4}' /proc/mounts | awk '{if ($3 ~ /^(jffs2|tmpfs|ramfs|rootfs|proc|sysfs|devpts|squashfs|overlay|overlayfs|ubifs)$/) print; else print \"[other source]\",\"[other mountpoint]\",$3,\"[options withheld]\"}'",
+      "output": "~ #"
+    },
+    {
+      "name": "storage",
+      "command": "cat /proc/mtd; cat /proc/partitions; df -Pk / /tmp /var /etc /mnt 2>/dev/null",
+      "output": "dev:    size   erasesize  name\nmtd0: 02800000 00020000 \"rootfs\"\nmtd1: 08000000 00020000 \"all\"\nmtd2: 00100000 00020000 \"config\"\nmtd3: 00080000 00020000 \"equip\"\nmtd4: 00080000 00020000 \"upgflag\"\nmtd5: 00080000 00020000 \"blrom\"\nmtd6: 00080000 00020000 \"rootfstag\"\nmtd7: 00200000 00020000 \"log\"\nmtd8: 08000000 00020000 \"html\"\nmtd9: 00080000 00020000 \"wlanrf\"\nmtd10: 05680000 00020000 \"kernel\"\nmtd11: 07e80000 00020000 \"kernelbak\"\nmtd12: 02800000 00020000 \"rootfsbak\"\nmtd13: 00080000 00020000 \"rootfstagbak\"\nmtd14: 00100000 00020000 \"backconfig\"\nmajor minor  #blocks  name\n\n  31        0      40960 mtdblock0\n  31        1     131072 mtdblock1\n  31        2       1024 mtdblock2\n  31        3        512 mtdblock3\n  31        4        512 mtdblock4\n  31        5        512 mtdblock5\n  31        6        512 mtdblock6\n  31        7       2048 mtdblock7\n  31        8     131072 mtdblock8\n  31        9        512 mtdblock9\n  31       10      88576 mtdblock10\n  31       11     129536 mtdblock11\n  31       12      40960 mtdblock12\n  31       13        512 mtdblock13\n  31       14       1024 mtdblock14\nFilesystem           1024-blocks    Used Available Capacity Mounted on\nrootfs                   40960     24724     16236  60% /\nnone                    524288       416    523872   0% /tmp\nnone                    524288       416    523872   0% /tmp\nrootfs                   40960     24724     16236  60% /\ntmpfs                    52656         0     52656   0% /mnt"
+    },
+    {
+      "name": "memory",
+      "command": "grep -E '^(MemTotal|MemFree|MemAvailable|Buffers|Cached|SwapTotal|SwapFree):' /proc/meminfo; cat /proc/uptime",
+      "output": "MemTotal:         105312 kB\nMemFree:           44512 kB\nMemAvailable:      41156 kB\nBuffers:               0 kB\nCached:            19468 kB\nSwapTotal:             0 kB\nSwapFree:              0 kB\n5166.22 10232.73"
+    },
+    {
+      "name": "paths",
+      "command": "ls -ld / /etc /var /tmp /root /home /mnt /rom /overlay /data /config 2>/dev/null; for p in /etc/passwd /etc/shadow /etc/group /var /etc/dropbear /etc/config /etc/rc.local; do ls -ld \"$p\" 2>/dev/null; readlink \"$p\" 2>/dev/null; done",
+      "output": "drwxr-xr-x   18 admin    admin            0 Jan  1 02:00 /\ndrwxr-xr-x    4 admin    admin            0 Jan  1 02:00 /data\ndrwxr-xr-x   16 admin    admin            0 Dec  9  2022 /etc\ndrwxr-xr-x    3 admin    admin            0 Dec  9  2022 /home\ndrwxrwxr-x    2 admin    admin           40 Jan  1 02:00 /mnt\ndrwxr-xr-x    2 admin    admin            0 Dec  9  2022 /overlay\ndrwxr-xr-x    2 admin    admin            0 Dec  9  2022 /root\ndrwxrwxrwt   21 admin    admin          640 Jan  1 03:11 /tmp\nlrwxrwxrwx    1 admin    admin            8 Dec  9  2022 /var -> /tmp/var\nlrwxrwxrwx    1 admin    admin           11 Dec  9  2022 /etc/passwd -> /var/passwd\n/var/passwd\n-rw-------    1 admin    admin          116 Apr 30  2014 /etc/shadow\nlrwxrwxrwx    1 admin    admin           10 Dec  9  2022 /etc/group -> /var/group\n/var/group\nlrwxrwxrwx    1 admin    admin            8 Dec  9  2022 /var -> /tmp/var\n/tmp/var\ndrwxr-xr-x    2 admin    admin            0 Dec  9  2022 /etc/config"
+    },
+    {
+      "name": "accounts",
+      "command": "awk -F: '$3==0 || $1==\"root\" || $1==\"admin\" {print \"account=\"$1,\"uid=\"$3,\"gid=\"$4,\"home=\"$6,\"shell=\"$7,\"password_field_nonempty=\"($2!=\"\"),\"shadow_marker=\"($2==\"x\"),\"locked=\"($2 ~ /^[!*]/)}' /etc/passwd; awk -F: '$1==\"root\" || $1==\"admin\" {print \"shadow_account=\"$1,\"nonempty=\"($2!=\"\"),\"locked=\"($2 ~ /^[!*]/),\"placeholder=\"($2==\"x\"),\"crypt_prefix=\"($2 ~ /^[$][1256][$]/)}' /etc/shadow",
+      "output": "account=admin uid=0 gid=0 home=/ shell=/bin/sh password_field_nonempty=1 shadow_marker=0 locked=0\nshadow_account=root nonempty=1 locked=0 placeholder=1 crypt_prefix=0"
+    },
+    {
+      "name": "dropbear_help",
+      "command": "/usr/sbin/dropbear -h 2>&1",
+      "output": "Dropbear server v2014.63 https://matt.ucc.asn.au/dropbear/dropbear.html\nUsage: /usr/sbin/dropbear [options]\n-b bannerfile   Display the contents of bannerfile before user login\n                (default: none)\n-r keyfile  Specify hostkeys (repeatable)\n                defaults: \n                dss /etc/dropbear/dropbear_dss_host_key\n                rsa /etc/dropbear/dropbear_rsa_host_key\n-R              Create hostkeys as required\n-F              Don't fork into background\n-E              Log to stderr rather than syslog\n-w              Disallow root logins\n-s              Disable password logins\n-g              Disable password logins for root\n-B              Allow blank password logins\n-j              Disable local port forwarding\n-k              Disable remote port forwarding\n-a              Allow connections to forwarded ports from any host\n-p [address:]port\n                Listen on specified tcp port (and optionally address),\n                up to 10 can be specified\n                (default port is 22 if none specified)\n-P PidFile      Create pid file PidFile\n                (default /var/run/dropbear.pid)\n-W <receive_window_buffer> (default 24576, larger may be faster, max 1MB)\n-K <keepalive>  (0 is never, default 0, in seconds)\n-I <idle_timeout>  (0 is never, default 0, in seconds)"
+    },
+    {
+      "name": "processes",
+      "command": "for d in /proc/[0-9]*; do [ -r \"$d/comm\" ] || continue; n=$(cat \"$d/comm\"); case \"$n\" in dropbear|tdsmgr|ams_cli|init|telnetd|uhttpd) printf '%s %s ' \"${d##*/}\" \"$n\"; awk '/^(PPid|Uid|Gid):/{printf \"%s \",$0} END {print \"\"}' \"$d/status\"; esac; done",
+      "output": "1 init PPid:    0 Uid:  0       0       0       0 Gid:  0       0       0       0 \n1037 telnetd PPid:      1 Uid:  0       0       0       0 Gid:  0       0       0       0 \n14368 ams_cli PPid:     1037 Uid:       0       0       0       0 Gid:  0       0       0       0 \n2743 uhttpd PPid:       1 Uid:  0       0       0       0 Gid:  0       0       0       0 \n3244 dropbear PPid:     1 Uid:  0       0       0       0 Gid:  0       0       0       0 \n846 tdsmgr PPid:        1 Uid:  0       0       0       0 Gid:  0       0       0       0"
+    },
+    {
+      "name": "startup_files",
+      "command": "ls -ld /etc/inittab /etc/init.d /etc/rc.d /etc/rc.d/rcS /etc/rc.local /etc/config/dropbear /etc/default/dropbear /etc/init.d/dropbear /usr/syscfg/sys.init.sh /usr/syscfg/sys.init_after.sh 2>/dev/null; cat /etc/inittab; ls /etc/rc.d 2>/dev/null",
+      "output": "drwxr-xr-x    2 admin    admin            0 Dec  9  2022 /etc/init.d\n-rw-r--r--    1 admin    admin          292 Oct  9  2015 /etc/inittab\ndrwxr-xr-x    2 admin    admin            0 Aug 30  2017 /etc/rc.d\n-rwxr-xr-x    1 admin    admin         7678 Aug 30  2017 /etc/rc.d/rcS\n-rwxr-xr-x    1 admin    admin         3051 Oct 15  2018 /usr/syscfg/sys.init.sh\n-rwxr-xr-x    1 admin    admin          274 Feb 16  2017 /usr/syscfg/sys.init_after.sh\n#\n# inittab       This file describes how the INIT process should set up\n#               the system during the initial booting process.\n\n# Ssystem initialization starts here\n\nconsole::sysinit:-/etc/rc.d/rcS\nttyAMA0::respawn:-/bin/sh\n\n::shutdown:/etc/rc.d/rc.shutdown\n::ctrlaltdel:/bin/false\n\nhistart       prepare_voip  rc.shutdown   rcS"
+    },
+    {
+      "name": "ssh_metadata",
+      "command": "for d in /etc/dropbear /.ssh /root/.ssh /var/.ssh; do ls -ld \"$d\" 2>/dev/null; done; for p in /etc/dropbear/* /.ssh/authorized_keys /root/.ssh/authorized_keys /var/.ssh/authorized_keys; do [ -e \"$p\" ] && ls -ld \"$p\"; done",
+      "output": "~ #"
+    }
+  ]
+}

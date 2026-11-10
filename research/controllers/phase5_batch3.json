@@ -1,0 +1,30 @@
+[
+  {
+    "name": "persistent_layout",
+    "command": "ls -ld /data /data/* /var/dropbear /var/dropbear/* 2>/dev/null; df -Pk /data"
+  },
+  {
+    "name": "root_keydir",
+    "command": "ls -ld /etc/config /etc/config/* /.ssh /root/.ssh /etc/dropbear 2>/dev/null"
+  },
+  {
+    "name": "boot_mounts",
+    "command": "grep -n -E 'mount|mtd|/data|/var|rc.local|init.d|sys.init|tdsmgr|dropbear|telnet|sh$' /etc/rc.d/rcS; cat /usr/syscfg/sys.init_after.sh; grep -n -E 'genSysFiles|passwd|chpasswd|tdsmgr|sys.init|dropbear|telnet' /usr/syscfg/sys.init.sh"
+  },
+  {
+    "name": "key_metadata",
+    "command": "for d in /var/dropbear /tmp/dropbear /data/dropbear /data/config /data/etc; do ls -ld \"$d\" 2>/dev/null; done; for p in /var/dropbear/* /tmp/dropbear/* /data/dropbear/*; do [ -e \"$p\" ] && ls -ld \"$p\"; done; ls -ld /etc/shells /bin/sh; [ ! -f /etc/shells ] || cat /etc/shells"
+  },
+  {
+    "name": "service_startup_references",
+    "command": "grep -n -E 'dropbear|telnetd|ams_cli|authorized_keys|/data|/etc/passwd' /usr/syscfg/*.sh /etc/init.d/* 2>/dev/null | grep -v -i -E 'password|passwd=|pass=|pwd='"
+  },
+  {
+    "name": "sockets",
+    "command": "netstat -lnt 2>/dev/null | awk 'NR<3 || $4 ~ /:(22|23)$/'; ip -o -4 addr show br0 2>/dev/null; ip -o link show 2>/dev/null | awk '{print $1,$2}'"
+  },
+  {
+    "name": "flash_geometry",
+    "command": "for d in /sys/class/mtd/mtd[0-9]*; do printf '%s ' \"${d##*/}\"; for f in name type size erasesize writesize oobsize offset flags; do [ ! -r \"$d/$f\" ] || { printf '%s=' \"$f\"; tr '\\n' ' ' < \"$d/$f\"; }; done; printf '\\n'; done"
+  }
+]

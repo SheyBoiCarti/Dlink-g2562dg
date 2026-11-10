@@ -1,0 +1,34 @@
+[
+  {
+    "name": "mount_sources",
+    "command": "awk '{if ($3==\"jffs2\") print $1,$2,$3,$4}' /proc/mounts"
+  },
+  {
+    "name": "mtd_geometry",
+    "command": "cat /sys/class/mtd/mtd0/type /sys/class/mtd/mtd0/size /sys/class/mtd/mtd0/erasesize /sys/class/mtd/mtd0/writesize /sys/class/mtd/mtd0/oobsize /sys/class/mtd/mtd7/size 2>/dev/null"
+  },
+  {
+    "name": "account_counts",
+    "command": "awk -F: '{n++; if ($3==0) z++} END {print \"passwd_records=\"n,\"uid0_records=\"z}' /etc/passwd"
+  },
+  {
+    "name": "acl_ipv4",
+    "command": "iptables -S service_list; iptables -S SCL_IP_FILTER_ACCEPT; iptables -S SCL_IP_DROP"
+  },
+  {
+    "name": "acl_ipv6",
+    "command": "ip6tables -S 2>/dev/null | awk '{for(i=1;i<=NF;i++){if($i==\"-s\"||$i==\"-d\")$(i+1)=\"[address withheld]\"}print}'"
+  },
+  {
+    "name": "config_ssh",
+    "command": "cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Enable; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Port"
+  },
+  {
+    "name": "namespace_features",
+    "command": "for x in unshare nsenter; do command -v \"$x\"; done; ls -l /proc/self/ns/mnt /proc/config.gz 2>/dev/null; if [ -r /proc/config.gz ]; then zcat /proc/config.gz | grep -E 'CONFIG_(NAMESPACES|MOUNT|OVERLAY|JFFS2|MTD_NAND|SQUASHFS)'; fi"
+  },
+  {
+    "name": "root_history_and_startup",
+    "command": "ls -l /.ash_history /root/.ash_history /etc/rc.local /etc/init.d/dropbear /etc/default/dropbear /etc/config/dropbear 2>/dev/null; ls -la /overlay; grep -n -E \"mount|/data|/dev/mtd\" /etc/rc.d/histart /etc/rc.d/rc.shutdown 2>/dev/null"
+  }
+]

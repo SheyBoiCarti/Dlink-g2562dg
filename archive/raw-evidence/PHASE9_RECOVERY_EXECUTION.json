@@ -1,0 +1,8 @@
+{
+  "time_utc": "2026-10-19T19:45:51.207111+00:00",
+  "rollback": "Temporary processes, six binds and owned RAM files removed.",
+  "state": "absent",
+  "original_host_identity_matches": true,
+  "listeners": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN",
+  "scratch_mounts": ""
+}

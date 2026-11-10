@@ -1,0 +1,21 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:13:03.148864+00:00",
+  "records": [
+    {
+      "name": "boot_hook_caller",
+      "command": "strings /usr/sbin/tdsmgr | grep -E '^/usr/syscfg/sys.init_after.sh$|^process_init_after$'; ls -l /etc/rc.d/rc.shutdown; strings /usr/sbin/utils | grep -E '^mount -t jffs2|^umount /data|^/dev/mtdblock7|^/data$|^rm -rf /data|^flash_erase'",
+      "output": "-rwxr-xr-x    1 admin    admin            0 Oct  9  2015 /etc/rc.d/rc.shutdown\nmount -t jffs2 /dev/mtdblock7 /data"
+    },
+    {
+      "name": "runtime_key_status",
+      "command": "ls -ld /etc/dropbear /var/dropbear /var/dropbear/rsa_host_key /.ssh /root/.ssh 2>/dev/null",
+      "output": "drwxr-xr-x    2 admin    admin           60 Jan  1 02:00 /var/dropbear\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key"
+    },
+    {
+      "name": "services_final",
+      "command": "netstat -lnt 2>/dev/null | awk 'NR<3 || $4 ~ /:(22|23)$/'; id -u; awk '$3==\"jffs2\" {print $2,$3,$4}' /proc/mounts",
+      "output": "Active Internet connections (only servers)\nProto Recv-Q Send-Q Local Address           Foreign Address         State       \ntcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      \ntcp        0      0 :::22                   :::*                    LISTEN      \ntcp        0      0 :::23                   :::*                    LISTEN      \n0\n/ jffs2 ro,relatime\n/data jffs2 rw,relatime"
+    }
+  ]
+}

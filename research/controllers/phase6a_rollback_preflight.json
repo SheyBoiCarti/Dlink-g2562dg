@@ -1,0 +1,6 @@
+[
+  {
+    "name": "unmount_help",
+    "command": "umount --help 2>&1; command -v mount; command -v umount; command -v chroot"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "target": "10.0.0.2:23",
+  "time_utc": "2026-10-19T18:14:04.613919+00:00",
+  "records": [
+    {
+      "name": "boot_hook_reference",
+      "command": "strings /usr/sbin/tdsmgr | grep -F 'sys.init_after.sh'; strings /usr/sbin/utils | grep -E '(/data|mtdblock7|log.*(clear|erase)|jffs2)' | grep -v -E '/data[0-9]+/|password|PRIVATE' | head -n 30",
+      "output": "-Call sys.init_after.sh to start other process!\nsh /usr/syscfg/sys.init_after.sh\nmount -t jffs2 /dev/mtdblock7 /data\n*.emerg          /data/log/emerg.txt\n*.alert          /data/log/alert.txt\n*.crit           /data/log/crit.txt\n*.err            /data/log/err.txt\n*.warning        /data/log/warning.txt\n*.notice         /data/log/notice.txt\n*.info           /data/log/info.txt\n*.debug          /data/log/debug.txt\n/data/log"
+    },
+    {
+      "name": "model_build",
+      "command": "printf 'software='; cfgcmd get InternetGatewayDevice.DeviceInfo.SoftwareVersion; printf '\\nhardware='; cfgcmd get InternetGatewayDevice.DeviceInfo.HardwareVersion; printf '\\n'",
+      "output": "software=TK_1.00TK_V1.2.12ak_20221018\nhardware=G2562DG"
+    },
+    {
+      "name": "snapshot_permissions",
+      "command": "ls -ld /etc /etc/rc.d /usr/syscfg /etc/rc.d/rcS /etc/inittab /usr/syscfg/sys.init_after.sh /var/dropbear /var/dropbear/rsa_host_key",
+      "output": "n'\ndrwxr-xr-x   16 admin    admin            0 Dec  9  2022 /etc\n-rw-r--r--    1 admin    admin          292 Oct  9  2015 /etc/inittab\ndrwxr-xr-x    2 admin    admin            0 Aug 30  2017 /etc/rc.d\n-rwxr-xr-x    1 admin    admin         7678 Aug 30  2017 /etc/rc.d/rcS\ndrwxr-xr-x   11 admin    admin            0 Jan 14  2019 /usr/syscfg\n-rwxr-xr-x    1 admin    admin          274 Feb 16  2017 /usr/syscfg/sys.init_after.sh\ndrwxr-xr-x    2 admin    admin           60 Jan  1 02:00 /var/dropbear\n-rw-------    1 admin    admin          805 Jan  1 02:00 /var/dropbear/rsa_host_key"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "time_utc": "2026-10-19T19:57:31.137236+00:00",
+  "authorization": "Owner confirmed trusted physical Ethernet and approved read-only Telnet public-host-key verification",
+  "trust_updated": false,
+  "router_provisioned": false,
+  "telnet_uid0": true,
+  "console_public_fingerprint": "[PUBLIC_KEY_FINGERPRINT_2]",
+  "ssh_presented_fingerprint": "[PUBLIC_KEY_FINGERPRINT_2]",
+  "fingerprints_match": true,
+  "configured_old_fingerprint": "[PUBLIC_KEY_FINGERPRINT_1]",
+  "boot_id": "[RUNTIME_UUID_1]",
+  "uptime_seconds": "137.75",
+  "resource_state": "absent",
+  "root_mount": "/ jffs2 ro,relatime"
+}

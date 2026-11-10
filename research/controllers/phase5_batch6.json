@@ -1,0 +1,30 @@
+[
+  {
+    "name": "firewall_remaining",
+    "command": "iptables -S SCL_IP_ACCEPT; ip6tables -S SCL_IP_ACCEPT_V6; ip6tables -S SCL_IP_DROP_V6; iptables -S secondary_lan_in"
+  },
+  {
+    "name": "ipv6_scopes",
+    "command": "ip -o -6 addr show 2>/dev/null | awk '{scope=\"unknown\";for(i=1;i<=NF;i++)if($i==\"scope\")scope=$(i+1);print $2,\"scope=\"scope}'"
+  },
+  {
+    "name": "mtd_writeability",
+    "command": "printf \"rootfs_flags=\"; cat /sys/class/mtd/mtd0/flags; printf \"log_flags=\"; cat /sys/class/mtd/mtd7/flags; printf \"config_flags=\"; cat /sys/class/mtd/mtd2/flags"
+  },
+  {
+    "name": "ssh_settings",
+    "command": "printf 'ssh_enabled='; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Enable; printf '\\nssh_port='; cfgcmd get InternetGatewayDevice.Services.ServiceSSH.Port; printf '\\n'"
+  },
+  {
+    "name": "hook_candidates",
+    "command": "find /data /etc/init.d /etc/rc.d /usr/syscfg -maxdepth 2 -name '*local*' -o -name '*custom*' -o -name '*startup*' -o -name '*dropbear*' 2>/dev/null; ls -ld /etc/rc.d/rcS /usr/syscfg/sys.init_after.sh"
+  },
+  {
+    "name": "boot_commandline",
+    "command": "tr ' ' '\\n' < /proc/cmdline | awk '/^(console=|root=|rootfstype=|ro$|rw$|mtdparts=)/ {if ($0 ~ /^mtdparts=/) print \"mtdparts present, mapping withheld\";else print}'"
+  },
+  {
+    "name": "root_baseline",
+    "command": "id -u; uname -srm; awk -F: '$3==0 {print \"uid0_account=\"$1,\"home=\"$6,\"shell=\"$7}' /etc/passwd; awk '$3==\"jffs2\" {print $2,$3,$4}' /proc/mounts"
+  }
+]

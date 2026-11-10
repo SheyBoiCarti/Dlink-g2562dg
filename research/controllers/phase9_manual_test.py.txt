@@ -1,0 +1,45 @@
+import datetime,json,logging,sys
+from pathlib import Path
+from dlink_ssh_restore.cli import default_config,execute,local_lock
+from dlink_ssh_restore.config import Config
+from dlink_ssh_restore.credentials import Credentials
+from dlink_ssh_restore.router import Router
+from dlink_ssh_restore.restore import RestoreError
+logging.getLogger('paramiko').setLevel(logging.CRITICAL)
+report=Path('archive/raw-evidence/PHASE9_MANUAL_EXECUTION.json')
+data={'time_utc':datetime.datetime.now(datetime.timezone.utc).isoformat(),'approval':'Owner approved temporary RAM integration, manual monitor and cleanup; no scheduled task or reboot','steps':[]}
+def record(name,result):
+ data['steps'].append({'name':name,'result':result});report.write_text(json.dumps(data,indent=2),encoding='utf-8');print(name+': '+json.dumps(result),flush=True)
+c=Config.load(default_config());recovery=Router(c,Credentials(c.owner),'')
+failed=False
+with local_lock():
+ try:
+  recovery.connect();record('retained_original_telnet_uid0',True)
+  if recovery.state()!='absent':raise RestoreError('baseline_not_absent')
+  baseline=recovery.command("ps | awk '/[t]elnetd -l|[d]ropbear -r \\/var\\/dropbear\\/rsa_host_key -p 22$/ {print $1,$4,$5,$6,$7,$8}'")
+  record('original_service_baseline',baseline)
+  boot=recovery.snapshot()
+  record('restore',execute(c,'restore'))
+  record('status',execute(c,'status'))
+  record('repeat_restore',execute(c,'restore'))
+ except RestoreError as exc:
+  failed=True;record('failure',str(exc))
+ except Exception:
+  failed=True;record('failure','unexpected_error_details_suppressed')
+ finally:
+  try:record('rollback',execute(c,'rollback'))
+  except RestoreError as exc:failed=True;record('cleanup_failure',str(exc))
+  try:
+   record('post_rollback_status',execute(c,'status'))
+   current=recovery.command("ps | awk '/[t]elnetd -l|[d]ropbear -r \\/var\\/dropbear\\/rsa_host_key -p 22$/ {print $1,$4,$5,$6,$7,$8}'")
+   record('original_services_unchanged',current==baseline)
+   record('same_boot',recovery.snapshot()==boot)
+   record('host_identity_unchanged',recovery.identity()==c.host_fingerprint)
+   if current!=baseline:failed=True
+  except Exception:failed=True;record('recovery_check_failure','inspection_failed')
+  recovery.close()
+ try:
+  fresh=Router(c,Credentials(c.owner),'');fresh.connect();record('fresh_original_telnet_uid0',True);fresh.close()
+ except Exception:failed=True;record('fresh_telnet_failure','inspection_failed')
+data['passed']=not failed;report.write_text(json.dumps(data,indent=2),encoding='utf-8')
+sys.exit(1 if failed else 0)

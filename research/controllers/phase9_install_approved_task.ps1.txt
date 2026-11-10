@@ -1,0 +1,18 @@
+$ErrorActionPreference = 'Stop'
+$Host.UI.RawUI.WindowTitle = 'D-Link Phase 9 - approved scheduled task installation'
+$statusPath = Join-Path $env:LOCALAPPDATA 'DLinkSSHRestore\phase9_task_install_status.json'
+try {
+    if ([System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value -ne '[WINDOWS_SID_1]') { throw 'A different Windows account was supplied; refusing to change task identity.' }
+    $installer = '<WORKSPACE_OR_USER_HOME>\dlink-g2562dg\automation\windows\install-task.ps1'
+    $python = '<WORKSPACE_OR_USER_HOME>\dlink-g2562dg\automation\.venv312\Scripts\python.exe'
+    & $installer -Python $python
+    $task = Get-ScheduledTask -TaskName DLinkSSHRestore
+    if ($task.Principal.RunLevel -ne 'Limited' -or $task.Principal.LogonType -ne 'Interactive') { throw 'Unexpected principal; task was not started.' }
+    Start-ScheduledTask -TaskName DLinkSSHRestore
+    @{ result='registered_and_start_requested'; task='DLinkSSHRestore'; run_level=[string]$task.Principal.RunLevel; logon_type=[string]$task.Principal.LogonType } | ConvertTo-Json | Set-Content -LiteralPath $statusPath -Encoding utf8
+    Write-Host 'Approved current-user task registered and start requested. Return to chat for verification.'
+} catch {
+    @{ result='installation_failed'; error_type=$_.Exception.GetType().Name; error_id=$_.FullyQualifiedErrorId } | ConvertTo-Json | Set-Content -LiteralPath $statusPath -Encoding utf8
+    Write-Host ('Installation stopped: ' + $_.Exception.GetType().Name)
+}
+Read-Host 'Press Enter to close this installation window'

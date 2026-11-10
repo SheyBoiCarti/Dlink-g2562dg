@@ -1,0 +1,11 @@
+{
+  "target": "10.0.0.2:23",
+  "authentication": "firmware-derived built-in account",
+  "management_prompt": "AMS#",
+  "shell_command": "sh",
+  "proof": "printf 'DLINK_LINUX_PROOF\\n'; id; uname -srm\r\nDLINK_LINUX_PROOF\r\nuid=0(admin) gid=0(admin)\r\nLinux 3.14.18 armv7l\r\n~ # ",
+  "root_uid_verified": true,
+  "linux_verified": true,
+  "firmware_analysis_image_sha256": "2f7cf1c4992f6521265480dbb78d4989a80bf090ff636a3081ce6f1e275ebbd7",
+  "router_configuration_changed": false
+}

@@ -1,0 +1,26 @@
+{
+  "time_utc": "2026-10-19T19:30:24.077096+00:00",
+  "suite": "58 passed, 1 real-router test skipped",
+  "dependencies": {
+    "paramiko": "4.0.0",
+    "keyring": "25.7.0",
+    "cryptography": "50.0.2",
+    "pytest": "9.1.1"
+  },
+  "assets": {
+    "phase6a_setup.sh": {
+      "unchanged": true,
+      "sha256": "aac46a097b8f8ce0edbff6af80ea6efb56ba018cbc998ca4f56ad3bf001c52bb"
+    },
+    "phase6a_rollback.sh": {
+      "unchanged": true,
+      "sha256": "98f2962d44d5892ec29c940e20782e6c934189723a30b6b7732be62624db5472"
+    }
+  },
+  "final_regression": "70 passed, 1 gated live test skipped on Python 3.12 and 3.14",
+  "final_time_utc": "2026-10-19T19:53:20.319182+00:00",
+  "refreshed_wheel_verified": true,
+  "final_router_state": {
+    "state": "absent"
+  }
+}

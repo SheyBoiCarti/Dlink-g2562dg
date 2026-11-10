@@ -1,0 +1,52 @@
+UTC 2026-10-19T16:57:00.1291835Z target=10.0.0.2
+
+
+Port           : 21
+State          : open
+Protocol       : FTP greeting
+Evidence       : TCP connection completed from this LAN host; 220 greeting received (text withheld)
+Authentication : Not tested
+
+Port           : 22
+State          : open
+Protocol       : SSH
+Evidence       : TCP connection completed from this LAN host; SSH identification received (value withheld)
+Authentication : Not tested
+
+Port           : 23
+State          : open
+Protocol       : Telnet candidate
+Evidence       : TCP connection completed from this LAN host; greeting/negotiation bytes received; contents withheld
+Authentication : Not tested
+
+Port           : 53
+State          : open
+Protocol       : DNS candidate (TCP only)
+Evidence       : TCP connection completed from this LAN host
+Authentication : Not tested
+
+Port           : 80
+State          : open
+Protocol       : HTTP candidate
+Evidence       : TCP connection completed from this LAN host
+Authentication : Not tested
+
+Port           : 443
+State          : open
+Protocol       : HTTPS candidate
+Evidence       : TCP connection completed from this LAN host
+Authentication : Not tested
+
+Port           : 8080
+State          : timeout
+Protocol       : HTTP candidate
+Evidence       : No TCP completion within 2000ms; filtering vs loss unknown
+Authentication : Not tested
+
+Port           : 8443
+State          : timeout
+Protocol       : HTTPS candidate
+Evidence       : No TCP completion within 2000ms; filtering vs loss unknown
+Authentication : Not tested
+
+Nmap not installed; no installation attempted.

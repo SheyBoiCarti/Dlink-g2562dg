@@ -1,0 +1,50 @@
+[
+  {
+    "name": "identity",
+    "command": "id -u; id -g; uname -srm; readlink /proc/1/exe; readlink /proc/$$/exe"
+  },
+  {
+    "name": "busybox",
+    "command": "busybox 2>&1 | head -n 1; for x in awk stat readlink sha256sum base64 tar dd ip iptables netstat dropbear dropbearkey opkg; do command -v \"$x\"; done"
+  },
+  {
+    "name": "release",
+    "command": "for f in /etc/openwrt_release /etc/os-release; do if [ -r \"$f\" ]; then grep -E '^(ID|NAME|VERSION_ID|DISTRIB_ID|DISTRIB_RELEASE|DISTRIB_CODENAME|DISTRIB_TARGET|DISTRIB_DESCRIPTION)=' \"$f\"; fi; done"
+  },
+  {
+    "name": "mounts",
+    "command": "awk '{print $1, $2, $3, $4}' /proc/mounts | awk '{if ($3 ~ /^(jffs2|tmpfs|ramfs|rootfs|proc|sysfs|devpts|squashfs|overlay|overlayfs|ubifs)$/) print; else print \"[other source]\",\"[other mountpoint]\",$3,\"[options withheld]\"}'"
+  },
+  {
+    "name": "storage",
+    "command": "cat /proc/mtd; cat /proc/partitions; df -Pk / /tmp /var /etc /mnt 2>/dev/null"
+  },
+  {
+    "name": "memory",
+    "command": "grep -E '^(MemTotal|MemFree|MemAvailable|Buffers|Cached|SwapTotal|SwapFree):' /proc/meminfo; cat /proc/uptime"
+  },
+  {
+    "name": "paths",
+    "command": "ls -ld / /etc /var /tmp /root /home /mnt /rom /overlay /data /config 2>/dev/null; for p in /etc/passwd /etc/shadow /etc/group /var /etc/dropbear /etc/config /etc/rc.local; do ls -ld \"$p\" 2>/dev/null; readlink \"$p\" 2>/dev/null; done"
+  },
+  {
+    "name": "accounts",
+    "command": "awk -F: '$3==0 || $1==\"root\" || $1==\"admin\" {print \"account=\"$1,\"uid=\"$3,\"gid=\"$4,\"home=\"$6,\"shell=\"$7,\"password_field_nonempty=\"($2!=\"\"),\"shadow_marker=\"($2==\"x\"),\"locked=\"($2 ~ /^[!*]/)}' /etc/passwd; awk -F: '$1==\"root\" || $1==\"admin\" {print \"shadow_account=\"$1,\"nonempty=\"($2!=\"\"),\"locked=\"($2 ~ /^[!*]/),\"placeholder=\"($2==\"x\"),\"crypt_prefix=\"($2 ~ /^[$][1256][$]/)}' /etc/shadow"
+  },
+  {
+    "name": "dropbear_help",
+    "command": "/usr/sbin/dropbear -h 2>&1"
+  },
+  {
+    "name": "processes",
+    "command": "for d in /proc/[0-9]*; do [ -r \"$d/comm\" ] || continue; n=$(cat \"$d/comm\"); case \"$n\" in dropbear|tdsmgr|ams_cli|init|telnetd|uhttpd) printf '%s %s ' \"${d##*/}\" \"$n\"; awk '/^(PPid|Uid|Gid):/{printf \"%s \",$0} END {print \"\"}' \"$d/status\"; esac; done"
+  },
+  {
+    "name": "startup_files",
+    "command": "ls -ld /etc/inittab /etc/init.d /etc/rc.d /etc/rc.d/rcS /etc/rc.local /etc/config/dropbear /etc/default/dropbear /etc/init.d/dropbear /usr/syscfg/sys.init.sh /usr/syscfg/sys.init_after.sh 2>/dev/null; cat /etc/inittab; ls /etc/rc.d 2>/dev/null"
+  },
+  {
+    "name": "ssh_metadata",
+    "command": "for d in /etc/dropbear /.ssh /root/.ssh /var/.ssh; do ls -ld \"$d\" 2>/dev/null; done; for p in /etc/dropbear/* /.ssh/authorized_keys /root/.ssh/authorized_keys /var/.ssh/authorized_keys; do [ -e \"$p\" ] && ls -ld \"$p\"; done"
+  }
+]
